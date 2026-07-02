@@ -1,0 +1,2861 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAVO Labs | Creative Performance Lab</title>
+
+    <!-- Google Fonts: Alike (Luxury Serif), Inter (Sans-serif), Cairo (Arabic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alike&family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS with custom configuration matching Version 2 Colors -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mavoBg: '#9BA4AD',
+                        mavoBlack: '#0D0D0D',
+                        mavoMidnight: '#0A0E14',
+                        mavoPowderBlue: '#A9C8F0',
+                        mavoSilverGray: '#DADDE1',
+                        mavoDeepBlue: '#5E7FA8',
+                        mavoSlateSilver: '#8D96A3',
+                        mavoTeal: '#00F2FE',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Alike', 'serif'],
+                        arabic: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --mavo-bg: #9BA4AD;
+            --mavo-midnight: #0A0E14;
+            --mavo-powder: #A9C8F0;
+            --mavo-teal: #00F2FE;
+        }
+
+        body {
+            background-color: var(--mavo-bg);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Seamless dynamic pattern overlay */
+        .mavo-pattern {
+            background-image: radial-gradient(rgba(10, 14, 20, 0.08) 1.2px, transparent 1.2px);
+            background-size: 24px 24px;
+        }
+
+        /* Premium Card Blur and Depth styling */
+        .premium-card {
+            background: rgba(10, 14, 20, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .premium-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: var(--mavo-powder);
+            box-shadow: 0 30px 60px rgba(10, 14, 20, 0.4);
+        }
+
+        /* Ambient glow spots */
+        .ambient-glow {
+            filter: blur(140px);
+            opacity: 0.18;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        /* Language-specific UI overrides forcing Cairo on RTL */
+        html[dir="rtl"],
+        html[dir="rtl"] body,
+        html[dir="rtl"] p,
+        html[dir="rtl"] h1,
+        html[dir="rtl"] h2,
+        html[dir="rtl"] h3,
+        html[dir="rtl"] h4,
+        html[dir="rtl"] h5,
+        html[dir="rtl"] h6,
+        html[dir="rtl"] span,
+        html[dir="rtl"] a,
+        html[dir="rtl"] button,
+        html[dir="rtl"] div,
+        html[dir="rtl"] select,
+        html[dir="rtl"] option {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        /* Smooth scrollbar aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #9BA4AD;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0A0E14;
+            border-radius: 99px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1e293b;
+        }
+
+        /* SPA Page Transitions */
+        .page-view {
+            display: none;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .page-view.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Multi-directional creative scroll reveal animations */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Marquee horizontal infinite loop */
+        @keyframes marquee {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-scroll-marquee {
+            animation: marquee 32s linear infinite;
+        }
+
+        /* Dynamic scale transitions on interactive grids */
+        .grid-interactive-item {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .grid-interactive-item:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            transform: scale(1.03);
+            border-color: var(--mavo-teal);
+        }
+
+        /* Custom Accordion smooth transition */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .accordion-content.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body
+    class="text-mavoMidnight antialiased selection:bg-mavoBlack selection:text-white mavo-pattern min-h-screen flex flex-col justify-between relative">
+
+    <!-- High-Performance Background Connections Canvas -->
+    <canvas id="ambientParticles" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Ambient glowing nodes (Version 2 theme color accents) -->
+    <div class="absolute -top-40 left-0 w-[450px] h-[450px] rounded-full bg-mavoPowderBlue/35 ambient-glow"></div>
+    <div class="absolute bottom-40 right-0 w-[550px] h-[550px] rounded-full bg-mavoMidnight/15 ambient-glow"></div>
+    <div class="absolute top-[40%] left-[20%] w-[350px] h-[350px] rounded-full bg-mavoDeepBlue/10 ambient-glow"></div>
+
+    <!-- Live System Alert/Attribute Notification Bar -->
+    <div
+        class="bg-mavoMidnight text-mavoPowderBlue text-[11px] md:text-xs py-3 px-4 text-center tracking-widest font-semibold border-b border-white/5 flex justify-center items-center gap-2 relative z-50">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-mavoTeal animate-ping"></span>
+        <span data-i18n="top-bar">EXPERIMENT RUNNING: GCC DTC E-COMMERCE CONVERSION ENGINE 2026</span>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header
+        class="sticky top-0 z-50 bg-mavoBg/90 backdrop-blur-md border-b border-mavoBlack/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Brand Vector Logo - REPLACED WITH LOGO IMAGE -->
+            <a href="#" onclick="switchPage('home'); return false;" class="flex items-center gap-3 group relative z-50">
+                <img src="https://i.postimg.cc/13YFWpFb/MAVO-02.png" alt="MAVO Labs Logo"
+                    class="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                    onerror="this.onerror=null; this.src='https://placehold.co/120x40/0A0E14/A9C8F0?text=MAVO+Labs'">
+            </a>
+
+            <!-- SPA Navigation Links -->
+            <nav class="hidden md:flex items-center gap-6 lg:gap-8 font-semibold text-sm tracking-wide">
+                <a href="#home" onclick="switchPage('home')" id="nav-home"
+                    class="text-mavoBlack hover:text-white pb-1 border-b-2 border-transparent transition-all duration-200"
+                    data-i18n="nav-home">Home</a>
+                <a href="#about" onclick="switchPage('about')" id="nav-about"
+                    class="text-mavoBlack hover:text-white pb-1 border-b-2 border-transparent transition-all duration-200"
+                    data-i18n="nav-about">About Agency</a>
+                <a href="#services" onclick="switchPage('services')" id="nav-services"
+                    class="text-mavoBlack hover:text-white pb-1 border-b-2 border-transparent transition-all duration-200"
+                    data-i18n="nav-services">Services</a>
+                <a href="#calculator" onclick="switchPage('calculator')" id="nav-calculator"
+                    class="text-mavoBlack hover:text-white pb-1 border-b-2 border-transparent transition-all duration-200"
+                    data-i18n="nav-calc">ROI Simulator</a>
+                <a href="#contact" onclick="switchPage('contact')" id="nav-contact"
+                    class="text-mavoBlack hover:text-white pb-1 border-b-2 border-transparent transition-all duration-200"
+                    data-i18n="nav-contact">Contact Us</a>
+            </nav>
+
+            <!-- Navigation Controls -->
+            <div class="flex items-center gap-4 relative z-50">
+                <!-- Translation toggle button -->
+                <button onclick="toggleLanguage()"
+                    class="bg-mavoMidnight text-white hover:bg-white hover:text-mavoMidnight border border-transparent hover:border-mavoBlack/20 px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-globe text-mavoTeal animate-pulse"></i>
+                    <span id="langBtnText">العربية</span>
+                </button>
+
+                <!-- Action Button -->
+                <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20request%20a%20free%20growth%20audit."
+                    target="_blank"
+                    class="hidden lg:inline-block bg-mavoMidnight text-white hover:bg-white hover:text-mavoMidnight px-5 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase transition-all duration-300 shadow-md"
+                    data-i18n="nav-cta">
+                    Request Free Audit
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileNav()" class="md:hidden text-mavoBlack p-2 focus:outline-none"
+                    aria-label="Toggle Menu">
+                    <i id="mobMenuIcon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dynamic Drawer -->
+        <div id="mobMenuPanel"
+            class="hidden md:hidden bg-mavoMidnight text-white border-t border-white/5 px-6 py-8 flex flex-col gap-6 absolute w-full left-0 z-40 shadow-2xl">
+            <a href="#home" onclick="switchPage('home'); toggleMobileNav();"
+                class="text-base font-bold hover:text-mavoPowderBlue transition-colors" data-i18n="nav-home">Home</a>
+            <a href="#about" onclick="switchPage('about'); toggleMobileNav();"
+                class="text-base font-bold hover:text-mavoPowderBlue transition-colors" data-i18n="nav-about">About
+                Agency</a>
+            <a href="#services" onclick="switchPage('services'); toggleMobileNav();"
+                class="text-base font-bold hover:text-mavoPowderBlue transition-colors"
+                data-i18n="nav-services">Services</a>
+            <a href="#calculator" onclick="switchPage('calculator'); toggleMobileNav();"
+                class="text-base font-bold hover:text-mavoPowderBlue transition-colors" data-i18n="nav-calc">ROI
+                Simulator</a>
+            <a href="#contact" onclick="switchPage('contact'); toggleMobileNav();"
+                class="text-base font-bold hover:text-mavoPowderBlue transition-colors" data-i18n="nav-contact">Contact
+                Us</a>
+            <hr class="border-white/10">
+            <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20request%20a%20free%20growth%20audit."
+                target="_blank"
+                class="w-full text-center bg-mavoPowderBlue text-mavoMidnight py-3 rounded-lg text-sm font-bold tracking-wider uppercase transition-all shadow-md"
+                data-i18n="nav-cta">
+                Request Free Audit
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Dynamic SPA Page Container -->
+    <main class="flex-grow relative z-10 max-w-7xl mx-auto px-6 w-full py-12 md:py-20">
+
+        <!-- ================= HOME PAGE VIEW ================= -->
+        <section id="view-home" class="page-view active space-y-28">
+
+            <!-- Hero Section Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[65vh]">
+                <!-- Hero Left: Strategic Headlines & Copywriting -->
+                <div class="lg:col-span-7 space-y-8 reveal-left">
+                    <!-- Premium Tagline Badge -->
+                    <div
+                        class="inline-flex items-center gap-2 bg-mavoBlack text-white text-[11px] md:text-xs px-4 py-2 rounded-full font-bold tracking-widest w-fit shadow-md">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-mavoTeal animate-pulse"></span>
+                        <span data-i18n="hero-tagline" class="uppercase">MOVE ATTENTION. VALIDATE OUTCOMES.</span>
+                    </div>
+
+                    <!-- Editorial Headline (Removed all underlines) -->
+                    <h1 class="text-4xl md:text-6xl font-serif text-mavoBlack leading-[1.1] tracking-tight">
+                        <span data-i18n="hero-head-1">Pretty content doesn't sell.</span> <br>
+                        <span class="text-mavoMidnight font-extrabold" data-i18n="hero-head-2">Systems do.</span>
+                    </h1>
+
+                    <!-- Core Copy Statement -->
+                    <p class="text-base md:text-lg text-mavoMidnight/80 font-medium max-w-xl leading-relaxed"
+                        data-i18n="hero-subtext">
+                        Mavo Labs transforms digital friction into premium conversion systems. Crafted strictly for
+                        high-yield GCC e-commerce brands striving to eliminate wasteful campaigns and deploy scientific
+                        creative models.
+                    </p>
+
+                    <!-- Interactive Value Proposition Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-2">
+                        <div
+                            class="bg-mavoBlack/5 border border-mavoBlack/15 p-4 rounded-xl hover:border-mavoTeal/40 transition-colors">
+                            <span class="block text-[10px] uppercase tracking-wider font-bold text-mavoMidnight/60"
+                                data-i18n="prop-promise-label">The Promise</span>
+                            <span class="text-xs md:text-sm font-bold text-mavoMidnight mt-1 block"
+                                data-i18n="prop-promise-value">Guaranteed Proof</span>
+                        </div>
+                        <div
+                            class="bg-mavoBlack/5 border border-mavoBlack/15 p-4 rounded-xl hover:border-mavoTeal/40 transition-colors">
+                            <span class="block text-[10px] uppercase tracking-wider font-bold text-mavoMidnight/60"
+                                data-i18n="prop-market-label">Primary Market</span>
+                            <span class="text-xs md:text-sm font-bold text-mavoMidnight mt-1 block"
+                                data-i18n="prop-market-value">KSA & GCC First</span>
+                        </div>
+                        <div
+                            class="bg-mavoBlack/5 border border-mavoBlack/15 p-4 rounded-xl hover:border-mavoTeal/40 transition-colors col-span-2 md:col-span-1">
+                            <span class="block text-[10px] uppercase tracking-wider font-bold text-mavoMidnight/60"
+                                data-i18n="prop-role-label">Lab Role</span>
+                            <span class="text-xs md:text-sm font-bold text-mavoMidnight mt-1 block"
+                                data-i18n="prop-role-value">Growth Partners</span>
+                        </div>
+                    </div>
+
+                    <!-- Direct Call to Actions -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20request%20a%20free%20growth%20audit."
+                            target="_blank"
+                            class="bg-mavoMidnight text-white hover:bg-mavoMidnight/90 px-8 py-4 rounded-xl text-sm font-bold tracking-wider uppercase text-center transition-all shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <span data-i18n="hero-cta-primary">Start Free Audit</span>
+                            <i class="fa-solid fa-arrow-trend-up text-mavoTeal"></i>
+                        </a>
+                        <a href="#calculator" onclick="switchPage('calculator'); return false;"
+                            class="bg-white/40 border border-mavoBlack/20 hover:bg-white text-mavoMidnight px-8 py-4 rounded-xl text-sm font-bold text-center transition-all hover:-translate-y-0.5"
+                            data-i18n="hero-cta-secondary">
+                            Simulate Your Growth
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right: Dynamic Status Panel Card -->
+                <div class="lg:col-span-5 relative reveal-right">
+                    <div class="premium-card text-white p-8 rounded-2xl relative overflow-hidden group">
+                        <!-- Neon status border bar -->
+                        <div
+                            class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-mavoPowderBlue via-mavoDeepBlue to-mavoTeal">
+                        </div>
+                        <div
+                            class="absolute top-4 right-4 text-mavoTeal text-[9px] font-mono tracking-widest bg-white/5 px-2.5 py-1 rounded">
+                            SYS // ENG_2026</div>
+
+                        <h3 class="text-xl font-serif text-mavoPowderBlue mb-4" data-i18n="widget-title">Creative
+                            Performance Lab</h3>
+                        <p class="text-xs text-white/70 leading-relaxed mb-6" data-i18n="widget-desc">
+                            We develop high-performance creative assets integrated perfectly with data-backed media
+                            buying models to stop consumer scrolling.
+                        </p>
+
+                        <!-- Metric Blocks -->
+                        <div class="space-y-4">
+                            <div
+                                class="bg-white/5 p-4 rounded-xl border border-white/10 flex items-center justify-between hover:border-white/20 transition-all">
+                                <div>
+                                    <span class="block text-[9px] tracking-wider uppercase text-white/50"
+                                        data-i18n="widget-stat-1-label">Scaling Onboarding Time</span>
+                                    <span class="text-sm font-bold" data-i18n="widget-stat-1-value">45 Days Engine
+                                        Build</span>
+                                </div>
+                                <i class="fa-solid fa-bolt text-mavoTeal text-lg"></i>
+                            </div>
+                            <div
+                                class="bg-white/5 p-4 rounded-xl border border-white/10 flex items-center justify-between hover:border-white/20 transition-all">
+                                <div>
+                                    <span class="block text-[9px] tracking-wider uppercase text-white/50"
+                                        data-i18n="widget-stat-2-label">GCC Testing ROAS Uplift</span>
+                                    <span class="text-sm font-bold" data-i18n="widget-stat-2-value">+34% Avg Over
+                                        Baseline</span>
+                                </div>
+                                <i class="fa-solid fa-chart-line text-mavoTeal text-lg"></i>
+                            </div>
+                        </div>
+
+                        <!-- Panel status indicators -->
+                        <div
+                            class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] text-white/40">
+                            <span data-i18n="widget-status">SYS_STATUS: OPTIMAL</span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                                <span data-i18n="widget-active">ACTIVE EXPERIMENTS: 18</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trusted Client Logo Slider -->
+            <div class="space-y-6 reveal-on-scroll">
+                <p class="text-center text-xs tracking-widest text-mavoMidnight/40 uppercase font-bold"
+                    data-i18n="trust-label">TRUSTED BY POWERHOUSE BRANDS ACROSS THE GCC</p>
+                <div
+                    class="relative w-full overflow-hidden h-14 flex items-center bg-mavoMidnight/5 border-y border-mavoMidnight/10">
+                    <div class="flex gap-16 whitespace-nowrap animate-scroll-marquee">
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">AL-FAWZ
+                            CAPITAL</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">DESERT
+                            BLOOM</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">RIYADH
+                            FASHION HOUSE</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">OASIS
+                            DIRECT</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">SULTANA
+                            BEAUTY</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">GCC
+                            COSMETICS</span>
+
+                        <!-- Marquee duplicate track -->
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">AL-FAWZ
+                            CAPITAL</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">DESERT
+                            BLOOM</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">RIYADH
+                            FASHION HOUSE</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">OASIS
+                            DIRECT</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">SULTANA
+                            BEAUTY</span>
+                        <span
+                            class="text-lg font-serif text-mavoMidnight/40 font-bold uppercase hover:text-mavoMidnight transition-all cursor-default">GCC
+                            COSMETICS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPANDED HOME PAGE SECTION 1: Strategic Vision / Direct Bottlenecks -->
+            <div class="space-y-12 reveal-on-scroll">
+                <div class="text-center max-w-xl mx-auto space-y-3">
+                    <span
+                        class="text-xs uppercase tracking-widest text-mavoMidnight bg-white border border-mavoBlack/20 px-3 py-1 rounded-full font-bold inline-block"
+                        data-i18n="bottlenecks-tag">CONVERSION ANALYSIS</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="bottlenecks-title">Eliminate
+                        Hidden Waste</h2>
+                    <p class="text-mavoMidnight/70 text-sm md:text-base font-medium" data-i18n="bottlenecks-desc">Many
+                        DTC brands scale budgets blindly on platforms that misrepresent direct attribution. Our audit
+                        process immediately exposes key leakage nodes.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Waste Node 1 -->
+                    <div class="premium-card text-white p-8 rounded-2xl relative group overflow-hidden">
+                        <div
+                            class="absolute -top-10 -right-10 w-24 h-24 bg-red-500/10 rounded-full transition-transform group-hover:scale-150">
+                        </div>
+                        <div
+                            class="w-12 h-12 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center text-red-400 mb-6 group-hover:border-mavoTeal/35 transition-colors">
+                            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-serif text-white mb-3" data-i18n="waste-node1-title">Attribution Leaks
+                        </h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="waste-node1-desc">Standard channels
+                            overlap calculations, making brands think they make more money from specific ad variables
+                            than they actually do.</p>
+                    </div>
+
+                    <!-- Waste Node 2 -->
+                    <div class="premium-card text-white p-8 rounded-2xl relative group overflow-hidden">
+                        <div
+                            class="absolute -top-10 -right-10 w-24 h-24 bg-mavoDeepBlue/10 rounded-full transition-transform group-hover:scale-150">
+                        </div>
+                        <div
+                            class="w-12 h-12 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center text-mavoPowderBlue mb-6 group-hover:border-mavoTeal/35 transition-colors">
+                            <i class="fa-solid fa-hourglass-half text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-serif text-white mb-3" data-i18n="waste-node2-title">Fatigued Ad Copy
+                        </h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="waste-node2-desc">Using decorative
+                            graphics rather than targeted angles that handle primary regional objections reduces direct
+                            ROI velocity.</p>
+                    </div>
+
+                    <!-- Waste Node 3 -->
+                    <div class="premium-card text-white p-8 rounded-2xl relative group overflow-hidden">
+                        <div
+                            class="absolute -top-10 -right-10 w-24 h-24 bg-mavoTeal/10 rounded-full transition-transform group-hover:scale-150">
+                        </div>
+                        <div
+                            class="w-12 h-12 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center text-mavoTeal mb-6 group-hover:border-mavoTeal/35 transition-colors">
+                            <i class="fa-solid fa-arrows-split-up-and-left text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-serif text-white mb-3" data-i18n="waste-node3-title">Unoptimized Flows
+                        </h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="waste-node3-desc">Sending premium
+                            GCC leads to basic homepages rather than highly persuasive, fast product landing pages burns
+                            acquisition budgets.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPANDED HOME PAGE SECTION 2: Interactive Creative System Blueprint -->
+            <div class="space-y-12 reveal-on-scroll">
+                <div class="text-center max-w-xl mx-auto space-y-3">
+                    <span
+                        class="text-xs uppercase tracking-widest text-mavoMidnight bg-white border border-mavoBlack/20 px-3 py-1 rounded-full font-bold inline-block"
+                        data-i18n="blueprint-tag">OPERATIONAL DIAGRAM</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="blueprint-title">Creative
+                        Synthesis Loop</h2>
+                    <p class="text-mavoMidnight/70 text-sm md:text-base font-medium" data-i18n="blueprint-desc">We
+                        structure campaign elements dynamically, feeding customer performance data directly back into
+                        weekly asset production.</p>
+                </div>
+
+                <!-- Interactive SVG Graphic / Matrix grid explaining MAVO Systems -->
+                <div class="bg-mavoMidnight text-white border border-white/10 rounded-3xl p-8 relative overflow-hidden">
+                    <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-mavoTeal/5 rounded-full ambient-glow"></div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <!-- Matrix Graphic Explanation (Left) -->
+                        <div class="lg:col-span-4 space-y-6">
+                            <h3 class="text-2xl font-serif text-mavoPowderBlue" data-i18n="chart-niche-head">Optimized
+                                Media Funnels</h3>
+                            <p class="text-xs text-white/70 leading-relaxed" data-i18n="chart-niche-body">Choose a
+                                market sector profile inside our simulator dashboard to view historical conversions
+                                plotted against average GCC baselines.</p>
+
+                            <div class="space-y-4 pt-4 border-t border-white/5">
+                                <div class="flex gap-3 items-start">
+                                    <span
+                                        class="bg-mavoTeal/10 text-mavoTeal text-xs px-2 py-0.5 rounded font-mono font-bold">1</span>
+                                    <div class="text-xs text-white/80" data-i18n="diagram-step1">Analyze product metrics
+                                        and determine demographic margins.</div>
+                                </div>
+                                <div class="flex gap-3 items-start">
+                                    <span
+                                        class="bg-mavoTeal/10 text-mavoTeal text-xs px-2 py-0.5 rounded font-mono font-bold">2</span>
+                                    <div class="text-xs text-white/80" data-i18n="diagram-step2">Formulate 5 dynamic
+                                        hooks matching local GCC dialects.</div>
+                                </div>
+                                <div class="flex gap-3 items-start">
+                                    <span
+                                        class="bg-mavoTeal/10 text-mavoTeal text-xs px-2 py-0.5 rounded font-mono font-bold">3</span>
+                                    <div class="text-xs text-white/80" data-i18n="diagram-step3">Run automated bid
+                                        parameters on high-intent targets.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bespoke Active Visual Element: Live SVG-Based Conversion Graph (Right) -->
+                        <div class="lg:col-span-8 space-y-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <span class="text-xs font-bold text-white/80 tracking-widest font-mono">// SIMULATOR
+                                    VIEWPORT</span>
+                                <div class="flex gap-2 bg-white/5 p-1 rounded-lg border border-white/10">
+                                    <button onclick="updateHomeChart('fashion')" id="btn-home-fashion"
+                                        class="bg-mavoPowderBlue text-mavoMidnight px-3 py-1.5 rounded text-xs font-bold transition-all">Fashion
+                                        & Apparel</button>
+                                    <button onclick="updateHomeChart('beauty')" id="btn-home-beauty"
+                                        class="text-white hover:bg-white/5 px-3 py-1.5 rounded text-xs font-bold transition-all">Cosmetics</button>
+                                    <button onclick="updateHomeChart('electronics')" id="btn-home-electronics"
+                                        class="text-white hover:bg-white/5 px-3 py-1.5 rounded text-xs font-bold transition-all">Home
+                                        Electronics</button>
+                                </div>
+                            </div>
+
+                            <!-- Live Plot Canvas -->
+                            <div
+                                class="bg-mavoBlack/70 border border-white/5 rounded-xl p-4 h-[240px] flex flex-col justify-end relative">
+                                <div
+                                    class="absolute inset-x-4 top-4 flex justify-between text-[10px] font-mono text-white/40">
+                                    <span>REGIONAL PERFORMANCE MATRIX</span>
+                                    <span class="text-mavoTeal font-bold animate-pulse">// LIVE DATA REFRESH</span>
+                                </div>
+
+                                <!-- Dynamic Graph SVG -->
+                                <svg class="w-full h-[150px]" viewBox="0 0 1000 200" preserveAspectRatio="none">
+                                    <!-- Baseline curve -->
+                                    <path id="homeChartBaseline"
+                                        d="M0,160 L200,150 L400,155 L600,140 L800,145 L1000,135" fill="none"
+                                        stroke="#5E7FA8" stroke-width="2.5" stroke-dasharray="6,4"
+                                        class="transition-all duration-500"></path>
+                                    <!-- Optimized Mavo path -->
+                                    <path id="homeChartMavo" d="M0,160 L200,125 L400,90 L600,65 L800,45 L1000,20"
+                                        fill="none" stroke="#00F2FE" stroke-width="4.5"
+                                        class="transition-all duration-500"></path>
+                                </svg>
+
+                                <!-- Legend markers -->
+                                <div
+                                    class="flex justify-between text-[10px] font-mono text-white/40 border-t border-white/5 pt-2 mt-2">
+                                    <span>Day 0</span>
+                                    <span>Day 15</span>
+                                    <span>Day 30</span>
+                                    <span>Day 45 (Engine Synced)</span>
+                                </div>
+                            </div>
+
+                            <!-- Conversion Metrics readout -->
+                            <div class="grid grid-cols-3 gap-4 text-center bg-white/5 p-3 rounded-lg text-xs font-mono">
+                                <div>
+                                    <span class="block text-[9px] text-white/40">BASELINE VALUE</span>
+                                    <span id="chartReadoutBaseline" class="text-sm font-bold text-white">1.80%</span>
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-mavoTeal">OPTIMIZED VAL</span>
+                                    <span id="chartReadoutMavo" class="text-sm font-bold text-mavoTeal">4.20%</span>
+                                </div>
+                                <div>
+                                    <span class="block text-[9px] text-mavoPowderBlue">PERFORMANCE GAIN</span>
+                                    <span id="chartReadoutLift" class="text-sm font-bold text-white">+133% Uplift</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPANDED HOME PAGE SECTION 3: Detailed Success Archives / Performance Case Studies -->
+            <div class="space-y-12 reveal-on-scroll">
+                <div class="text-center max-w-xl mx-auto space-y-3">
+                    <span
+                        class="text-xs uppercase tracking-widest text-mavoMidnight bg-white border border-mavoBlack/20 px-3 py-1 rounded-full font-bold inline-block"
+                        data-i18n="success-tag">VERIFIED ARCHIVES</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="success-title">GCC Success
+                        Portfolios</h2>
+                    <p class="text-mavoMidnight/70 text-sm md:text-base font-medium" data-i18n="success-desc">Absolute
+                        outcomes tracked and formatted across major الخليج (Gulf) retail campaigns. No vanity metrics —
+                        strictly scaled spend and attributed cash flow.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Case 1 -->
+                    <div class="premium-card text-white p-8 rounded-2xl space-y-6 hover:-translate-y-2 transition-all">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] uppercase font-mono tracking-wider text-mavoTeal font-bold">// CASE
+                                STUDY 01</span>
+                            <span
+                                class="text-xs bg-white/10 px-2.5 py-1 rounded-full font-mono text-white/80">RIYADH</span>
+                        </div>
+                        <h4 class="text-xl font-serif text-white leading-tight" data-i18n="case1-title">Al-Sultan
+                            Premium Cosmetics</h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="case1-desc">How we restructured
+                            stagnant paid social campaigns to capture local high-spend shoppers, using dialect-based UGC
+                            format parameters.</p>
+                        <div class="border-t border-white/5 pt-4 flex justify-between items-end">
+                            <div>
+                                <span class="block text-[9px] text-white/40 uppercase font-mono">Ad Spend Scaled</span>
+                                <span class="text-sm font-bold font-mono text-mavoPowderBlue">250K+ SAR</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-[9px] text-white/40 uppercase font-mono">Attributed ROAS</span>
+                                <span class="text-base font-black font-mono text-mavoTeal">4.85x</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Case 2 -->
+                    <div class="premium-card text-white p-8 rounded-2xl space-y-6 hover:-translate-y-2 transition-all">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] uppercase font-mono tracking-wider text-mavoTeal font-bold">// CASE
+                                STUDY 02</span>
+                            <span
+                                class="text-xs bg-white/10 px-2.5 py-1 rounded-full font-mono text-white/80">DUBAI</span>
+                        </div>
+                        <h4 class="text-xl font-serif text-white leading-tight" data-i18n="case2-title">Oasis Apparel
+                            Group</h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="case2-desc">Eliminating overlapping
+                            conversion attribution tracking nodes to optimize landing pages and secure stable customer
+                            acquisitions.</p>
+                        <div class="border-t border-white/5 pt-4 flex justify-between items-end">
+                            <div>
+                                <span class="block text-[9px] text-white/40 uppercase font-mono">Ad Spend Scaled</span>
+                                <span class="text-sm font-bold font-mono text-mavoPowderBlue">520K+ AED</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-[9px] text-white/40 uppercase font-mono">Attributed ROAS</span>
+                                <span class="text-base font-black font-mono text-mavoTeal">3.90x</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Case 3 -->
+                    <div
+                        class="premium-card text-white p-8 rounded-2xl space-y-6 hover:-translate-y-2 transition-all col-span-1 md:col-span-2 lg:col-span-1">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] uppercase font-mono tracking-wider text-mavoTeal font-bold">// CASE
+                                STUDY 03</span>
+                            <span
+                                class="text-xs bg-white/10 px-2.5 py-1 rounded-full font-mono text-white/80">AL-KHOBAR</span>
+                        </div>
+                        <h4 class="text-xl font-serif text-white leading-tight" data-i18n="case3-title">Desert Bloom
+                            Botanicals</h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="case3-desc">Leveraging the full Mavo
+                            Growth Lab system to transition an organic local brand into a high-volume regional digital
+                            merchant.</p>
+                        <div class="border-t border-white/5 pt-4 flex justify-between items-end">
+                            <div>
+                                <span class="block text-[9px] text-white/40 uppercase font-mono">Ad Spend Scaled</span>
+                                <span class="text-sm font-bold font-mono text-mavoPowderBlue">180K+ SAR</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-[9px] text-white/40 uppercase font-mono">Attributed ROAS</span>
+                                <span class="text-base font-black font-mono text-mavoTeal">5.12x</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflow blueprint systems -->
+            <div class="space-y-12 reveal-on-scroll">
+                <div class="text-center max-w-xl mx-auto space-y-3">
+                    <span
+                        class="bg-white border border-mavoBlack/20 text-mavoMidnight text-xs px-3.5 py-1.5 rounded-full font-bold uppercase tracking-wider block w-fit mx-auto"
+                        data-i18n="blue-tag">STRATEGIC FLOW</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="blue-title">E-Commerce
+                        Blueprint</h2>
+                    <p class="text-mavoMidnight/70 text-sm md:text-base font-medium" data-i18n="blue-intro">We approach
+                        creative operations through absolute structural stages, ensuring no budget is activated blindly.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Phase 1 Node -->
+                    <div class="premium-card text-white p-8 rounded-2xl relative group overflow-hidden">
+                        <div
+                            class="text-5xl font-black font-mono text-white/5 absolute right-6 top-6 transition-transform group-hover:scale-125 group-hover:text-mavoTeal/10">
+                            01</div>
+                        <h4 class="text-lg font-serif text-white mb-3 mt-4" data-i18n="blue-p1-title">Funnel Diagnosis
+                        </h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="blue-p1-desc">
+                            We deploy absolute technical tracking, auditing every product page visual friction point and
+                            identifying leaky dropoffs.
+                        </p>
+                    </div>
+
+                    <!-- Phase 2 Node -->
+                    <div class="premium-card text-white p-8 rounded-2xl relative group overflow-hidden">
+                        <div
+                            class="text-5xl font-black font-mono text-white/5 absolute right-6 top-6 transition-transform group-hover:scale-125 group-hover:text-mavoTeal/10">
+                            02</div>
+                        <h4 class="text-lg font-serif text-white mb-3 mt-4" data-i18n="blue-p2-title">Creative Synthesis
+                        </h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="blue-p2-desc">
+                            We engineer specific visual patterns and psychological hooks tailored exactly for
+                            high-spending demographics in Saudi & Gulf.
+                        </p>
+                    </div>
+
+                    <!-- Phase 3 Node -->
+                    <div class="premium-card text-white p-8 rounded-2xl relative group overflow-hidden">
+                        <div
+                            class="text-5xl font-black font-mono text-white/5 absolute right-6 top-6 transition-transform group-hover:scale-125 group-hover:text-mavoTeal/10">
+                            03</div>
+                        <h4 class="text-lg font-serif text-white mb-3 mt-4" data-i18n="blue-p3-title">Omni scale launch
+                        </h4>
+                        <p class="text-xs text-white/70 leading-relaxed" data-i18n="blue-p3-desc">
+                            Unified delivery of programmatic campaigns, dynamic product feeds, and algorithmic bidding
+                            protocols to stabilize acquisition cost.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPANDED HOME PAGE SECTION 4: Interactive Collapsible Accordion / Strategy FAQ -->
+            <div class="max-w-4xl mx-auto space-y-12 reveal-on-scroll">
+                <div class="text-center space-y-3">
+                    <span
+                        class="text-xs uppercase tracking-widest text-mavoMidnight bg-white border border-mavoBlack/20 px-3 py-1 rounded-full font-bold inline-block"
+                        data-i18n="faq-tag">PERFORMANCE FAQS</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="faq-title">Strategic Insights
+                    </h2>
+                    <p class="text-mavoMidnight/70 text-sm font-medium" data-i18n="faq-desc">Answering the core
+                        operational questions of high-volume DTC and lead generation merchants.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Accordion Item 1 -->
+                    <div
+                        class="bg-mavoMidnight text-white border border-white/10 rounded-2xl overflow-hidden shadow-md">
+                        <button onclick="toggleAccordion('acc1')"
+                            class="w-full text-left p-6 font-serif text-base font-bold flex justify-between items-center focus:outline-none">
+                            <span id="title-acc1" data-i18n="acc1-question">How does Mavo Labs handle tracking post-iOS
+                                14.5 attribute loss?</span>
+                            <i id="icon-acc1"
+                                class="fa-solid fa-chevron-down text-mavoTeal transition-transform duration-300"></i>
+                        </button>
+                        <div id="content-acc1" class="accordion-content">
+                            <div class="p-6 pt-0 text-xs md:text-sm text-white/70 border-t border-white/5 leading-relaxed"
+                                data-i18n="acc1-answer">
+                                We completely bypass direct browser-based cookie tracking structures. By implementing
+                                premium server-side conversion API setups and integrating dynamic customer attribution
+                                dashboards, we cross-reference real server sales matches with spent advertising
+                                parameters.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 2 -->
+                    <div
+                        class="bg-mavoMidnight text-white border border-white/10 rounded-2xl overflow-hidden shadow-md">
+                        <button onclick="toggleAccordion('acc2')"
+                            class="w-full text-left p-6 font-serif text-base font-bold flex justify-between items-center focus:outline-none">
+                            <span id="title-acc2" data-i18n="acc2-question">What format variations do you build during
+                                campaign testing?</span>
+                            <i id="icon-acc2"
+                                class="fa-solid fa-chevron-down text-mavoTeal transition-transform duration-300"></i>
+                        </button>
+                        <div id="content-acc2" class="accordion-content">
+                            <div class="p-6 pt-0 text-xs md:text-sm text-white/70 border-t border-white/5 leading-relaxed"
+                                data-i18n="acc2-answer">
+                                Every sprint generates at least 5 customized hook versions for each main creative angle.
+                                We vary static layouts, dynamic product carousels, and local Gulf user-generated videos
+                                (UGC) to optimize direct consumer interest.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 3 -->
+                    <div
+                        class="bg-mavoMidnight text-white border border-white/10 rounded-2xl overflow-hidden shadow-md">
+                        <button onclick="toggleAccordion('acc3')"
+                            class="w-full text-left p-6 font-serif text-base font-bold flex justify-between items-center focus:outline-none">
+                            <span id="title-acc3" data-i18n="acc3-question">Do you require long-term binding marketing
+                                retainers?</span>
+                            <i id="icon-acc3"
+                                class="fa-solid fa-chevron-down text-mavoTeal transition-transform duration-300"></i>
+                        </button>
+                        <div id="content-acc3" class="accordion-content">
+                            <div class="p-6 pt-0 text-xs md:text-sm text-white/70 border-t border-white/5 leading-relaxed"
+                                data-i18n="acc3-answer">
+                                No. We scale based strictly on performance milestones. If we fail to demonstrate direct
+                                attributed conversion improvement or target ROAS metrics within established testing
+                                cycles, partners have complete flexibility.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= ABOUT US VIEW ================= -->
+        <section id="view-about" class="page-view space-y-28">
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span
+                        class="text-xs text-mavoMidnight bg-white border border-mavoBlack/20 px-3 py-1.5 rounded-full font-bold uppercase tracking-widest block w-fit"
+                        data-i18n="about-tagline">// THE FOUNDATION</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="about-title">About Mavo Labs
+                    </h2>
+                    <p class="text-mavoMidnight/80 max-w-md text-sm md:text-base leading-relaxed"
+                        data-i18n="about-intro">
+                        Most traditional creative agencies celebrate artistic vanity metrics that lack financial
+                        leverage. At Mavo Labs, we look directly at bottom-line growth. We do not design for empty
+                        applause—we build systems.
+                    </p>
+                    <div class="p-4 bg-mavoMidnight text-white border border-white/10 rounded-xl space-y-2">
+                        <span class="text-xs text-mavoTeal font-bold uppercase block tracking-wider">// OPERATIONAL
+                            PRINCIPLE</span>
+                        <p class="text-xs text-white/70 leading-relaxed font-sans" data-i18n="about-meta">
+                            Every visual asset must carry conversion weight. If an asset cannot generate conversion
+                            statistics, it does not proceed to live distribution.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Strategic Core Values Matrix -->
+                <div class="space-y-4">
+                    <div class="premium-card p-6 rounded-xl flex items-center gap-4 text-white">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-mavoTeal">
+                            <i class="fa-solid fa-calculator text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-md font-serif text-mavoPowderBlue font-bold" data-i18n="about-v1-title">
+                                Arithmetic Performance</h4>
+                            <p class="text-xs text-white/70 mt-1 font-sans" data-i18n="about-v1-desc">We replace
+                                aesthetic assumptions with continuous testing parameters and analytical charts.</p>
+                        </div>
+                    </div>
+                    <div class="premium-card p-6 rounded-xl flex items-center gap-4 text-white">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-mavoTeal">
+                            <i class="fa-solid fa-gauge-high text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-md font-serif text-mavoPowderBlue font-bold" data-i18n="about-v2-title">GCC
+                                Customization</h4>
+                            <p class="text-xs text-white/70 mt-1 font-sans" data-i18n="about-v2-desc">Deep regional
+                                analysis mapping local slang, delivery, and cultural markers for maximum alignment.</p>
+                        </div>
+                    </div>
+                    <div class="premium-card p-6 rounded-xl flex items-center gap-4 text-white">
+                        <div
+                            class="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-mavoTeal">
+                            <i class="fa-solid fa-bolt-lightning text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-md font-serif text-mavoPowderBlue font-bold" data-i18n="about-v3-title">
+                                Hyper-Velocity Execution</h4>
+                            <p class="text-xs text-white/70 mt-1 font-sans" data-i18n="about-v3-desc">Fast asset
+                                rendering, continuous testing, and real-time optimization without creative slowdowns.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Differentiation Table -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- The Traditional Way -->
+                <div class="bg-white/30 border border-mavoBlack/15 p-8 rounded-2xl relative">
+                    <span
+                        class="absolute top-6 right-6 text-mavoMidnight/50 text-xs font-bold uppercase tracking-widest font-mono"
+                        data-i18n="diff-traditional-badge">The Old Agency Model</span>
+                    <h3 class="text-2xl font-serif text-mavoMidnight mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-circle-xmark text-red-500"></i>
+                        <span data-i18n="diff-traditional-title-text">The Typical Agency</span>
+                    </h3>
+
+                    <ul class="space-y-4 text-sm text-mavoMidnight/80 font-medium">
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold mt-0.5">—</span>
+                            <div data-i18n="diff-t-1"><strong>Scattered services:</strong> Siloed departments executing
+                                generic agendas.</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold mt-0.5">—</span>
+                            <div data-i18n="diff-t-2"><strong>Random Social Postings:</strong> Building calendars
+                                without sales conversion goals.</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold mt-0.5">—</span>
+                            <div data-i18n="diff-t-3"><strong>Pure Aesthetic Designs:</strong> Creating visual decor
+                                with no performance checks.</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-red-500 font-bold mt-0.5">—</span>
+                            <div data-i18n="diff-t-4"><strong>Vague Dashboard Reporting:</strong> Concealing outcomes
+                                behind views and metrics.</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- The Mavo Way -->
+                <div class="premium-card text-white p-8 rounded-2xl relative shadow-2xl">
+                    <span
+                        class="absolute top-6 right-6 text-mavoTeal text-xs font-bold uppercase tracking-widest font-mono"
+                        data-i18n="diff-mavo-badge">The Mavo Model</span>
+                    <h3 class="text-2xl font-serif text-mavoPowderBlue mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-mavoTeal"></i>
+                        <span data-i18n="diff-mavo-title">Mavo Labs</span>
+                    </h3>
+
+                    <ul class="space-y-4 text-sm text-white">
+                        <li class="flex items-start gap-3">
+                            <span class="text-mavoTeal font-bold mt-0.5"><i class="fa-solid fa-check"></i></span>
+                            <div data-i18n="diff-m-1"><strong>Unified Growth Systems:</strong> Linking creative, media
+                                buying, and analytics.</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-mavoTeal font-bold mt-0.5"><i class="fa-solid fa-check"></i></span>
+                            <div data-i18n="diff-m-2"><strong>Conversion Creative:</strong> Building tailored assets
+                                crafted directly to sell products.</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-mavoTeal font-bold mt-0.5"><i class="fa-solid fa-check"></i></span>
+                            <div data-i18n="diff-m-3"><strong>Tested Content Angles:</strong> Ruthless experimentation
+                                with hooks, formats, and copywriting.</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-mavoTeal font-bold mt-0.5"><i class="fa-solid fa-check"></i></span>
+                            <div data-i18n="diff-m-4"><strong>Clear Outcome Reports:</strong> Unfiltered data and exact
+                                learnings from every sprint.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Six Core Operational Rules -->
+            <div class="space-y-12">
+                <div class="text-center max-w-xl mx-auto mb-12">
+                    <span
+                        class="text-xs uppercase tracking-widest text-mavoMidnight bg-white border border-mavoBlack/20 px-3 py-1 rounded-full font-bold inline-block"
+                        data-i18n="values-sub">// CODE OF CONDUCT</span>
+                    <h3 class="text-2xl md:text-4xl font-serif mt-2 text-mavoBlack" data-i18n="values-title">Six Lab
+                        Guidelines</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rule 1 -->
+                    <div class="premium-card text-white p-6 rounded-xl hover:bg-white/10 transition-colors">
+                        <span class="text-mavoTeal font-mono text-[11px] block mb-2">01 // PROOF OVER NOISE</span>
+                        <h4 class="text-lg font-serif mb-1" data-i18n="val-1-title">Proof over noise</h4>
+                        <p class="text-xs text-white/70 leading-relaxed font-sans" data-i18n="val-1-desc">We prove
+                            commercial impact. We do not celebrate superficial impressions or vanity numbers.</p>
+                    </div>
+                    <!-- Rule 2 -->
+                    <div class="premium-card text-white p-6 rounded-xl hover:bg-white/10 transition-colors">
+                        <span class="text-mavoTeal font-mono text-[11px] block mb-2">02 // CREATIVE WITH TEETH</span>
+                        <h4 class="text-lg font-serif mb-1" data-i18n="val-2-title">Creative with teeth</h4>
+                        <p class="text-xs text-white/70 leading-relaxed font-sans" data-i18n="val-2-desc">Creative is an
+                            idea with a sharp angle and clear message — specifically built to sell, never to decorate.
+                        </p>
+                    </div>
+                    <!-- Rule 3 -->
+                    <div class="premium-card text-white p-6 rounded-xl hover:bg-white/10 transition-colors">
+                        <span class="text-mavoTeal font-mono text-[11px] block mb-2">03 // SYSTEMS OVER POSTS</span>
+                        <h4 class="text-lg font-serif mb-1" data-i18n="val-3-title">Systems beat random posts</h4>
+                        <p class="text-xs text-white/70 leading-relaxed font-sans" data-i18n="val-3-desc">We build
+                            marketing systems that map out the full purchase journey, not random daily calendars.</p>
+                    </div>
+                    <!-- Rule 4 -->
+                    <div class="premium-card text-white p-6 rounded-xl hover:bg-white/10 transition-colors">
+                        <span class="text-mavoTeal font-mono text-[11px] block mb-2">04 // SHARP HONESTY</span>
+                        <h4 class="text-lg font-serif mb-1" data-i18n="val-4-title">Sharp honesty</h4>
+                        <p class="text-xs text-white/70 leading-relaxed font-sans" data-i18n="val-4-desc">We tell
+                            clients the absolute truth, even when the bottleneck is their offer, checkout page, or price
+                            model.</p>
+                    </div>
+                    <!-- Rule 5 -->
+                    <div class="premium-card text-white p-6 rounded-xl hover:bg-white/10 transition-colors">
+                        <span class="text-mavoTeal font-mono text-[11px] block mb-2">05 // TEST - LEARN - MOVE</span>
+                        <h4 class="text-lg font-serif mb-1" data-i18n="val-5-title">Test, learn, move</h4>
+                        <p class="text-xs text-white/70 leading-relaxed font-sans" data-i18n="val-5-desc">Every ad
+                            project is an analytical experiment. We test and evaluate hooks, landing pages, and formats.
+                        </p>
+                    </div>
+                    <!-- Rule 6 -->
+                    <div class="premium-card text-white p-6 rounded-xl hover:bg-white/10 transition-colors">
+                        <span class="text-mavoTeal font-mono text-[11px] block mb-2">06 // PREMIUM DISCIPLINE</span>
+                        <h4 class="text-lg font-serif mb-1" data-i18n="val-6-title">Premium discipline</h4>
+                        <p class="text-xs text-white/70 leading-relaxed font-sans" data-i18n="val-6-desc">Premium isn't
+                            about using gold or shiny colors. It's knowing when to delete elements. Simpler and sharper.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= SERVICES VIEW ================= -->
+        <section id="view-services" class="page-view space-y-28">
+
+            <div class="text-center max-w-xl mx-auto space-y-3">
+                <span
+                    class="text-xs uppercase tracking-widest bg-mavoMidnight text-white px-3.5 py-1.5 rounded-full font-bold inline-block"
+                    data-i18n="service-tag">LAB SERVICES</span>
+                <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="service-title">Built to Scale</h2>
+                <p class="text-mavoMidnight/70 text-sm md:text-base font-medium" data-i18n="service-desc">
+                    Clear frameworks mapped to your current e-commerce stage. No complex retainers or vague scopes.
+                </p>
+            </div>
+
+            <!-- Program Offer Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Program 1 -->
+                <div class="premium-card text-white p-6 rounded-xl flex flex-col justify-between relative">
+                    <div>
+                        <span
+                            class="text-[10px] tracking-widest text-mavoPowderBlue uppercase font-bold block mb-1">STAGE
+                            01</span>
+                        <h3 class="text-xl font-serif font-bold mb-3 text-white" data-i18n="serv-s1-title">Signal Sprint
+                        </h3>
+                        <p class="text-xs text-white/70 mb-6 leading-relaxed" data-i18n="serv-s1-desc">
+                            Complete business diagnosis & funnel conversion roadmap to pinpoint bottlenecks.
+                        </p>
+
+                        <ul class="space-y-2.5 text-xs text-white/80 border-t border-white/15 pt-4 mb-8">
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s1-f1">Funnel Strategy Audit</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s1-f2">Creative Roadmap Analysis</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s1-f3">Competitive Benchmarks</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s1-f4">Immediate Action Plan</span></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="switchPage('service-sprint')"
+                            class="w-full bg-mavoPowderBlue/15 hover:bg-mavoPowderBlue text-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors border border-mavoPowderBlue/30"
+                            data-i18n="serv-details-btn">
+                            Detailed Program Page
+                        </button>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27m%20interested%20in%20the%20Signal%20Sprint%20package."
+                            target="_blank"
+                            class="w-full bg-white/10 hover:bg-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors block"
+                            data-i18n="serv-cta">
+                            Choose Sprint
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="premium-card text-white p-6 rounded-xl flex flex-col justify-between relative">
+                    <div>
+                        <span
+                            class="text-[10px] tracking-widest text-mavoPowderBlue uppercase font-bold block mb-1">STAGE
+                            02</span>
+                        <h3 class="text-xl font-serif font-bold mb-3 text-white" data-i18n="serv-s2-title">Creative
+                            Engine</h3>
+                        <p class="text-xs text-white/70 mb-6 leading-relaxed" data-i18n="serv-s2-desc">
+                            Ongoing production of high-performance ad formats and hooks tested specifically for the GCC.
+                        </p>
+
+                        <ul class="space-y-2.5 text-xs text-white/80 border-t border-white/15 pt-4 mb-8">
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s2-f1">UGC Video Blueprints</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s2-f2">High-Performance Statics</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s2-f3">Direct-Response Ad Copy</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s2-f4">Weekly Hook Experimentation</span></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="switchPage('service-engine')"
+                            class="w-full bg-mavoPowderBlue/15 hover:bg-mavoPowderBlue text-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors border border-mavoPowderBlue/30"
+                            data-i18n="serv-details-btn">
+                            Detailed Program Page
+                        </button>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27m%20interested%20in%20the%20Creative%20Engine%20package."
+                            target="_blank"
+                            class="w-full bg-white/10 hover:bg-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors block"
+                            data-i18n="serv-cta">
+                            Choose Engine
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Program 3 (Most Popular) -->
+                <div
+                    class="premium-card text-white p-6 rounded-xl flex flex-col justify-between relative border-2 border-mavoPowderBlue shadow-2xl">
+                    <span
+                        class="absolute -top-3 left-6 bg-mavoPowderBlue text-mavoMidnight text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-md"
+                        data-i18n="serv-popular">Popular</span>
+                    <div>
+                        <span
+                            class="text-[10px] tracking-widest text-mavoPowderBlue uppercase font-bold block mb-1">STAGE
+                            03</span>
+                        <h3 class="text-xl font-serif font-bold mb-3 text-white" data-i18n="serv-s3-title">Growth Lab
+                        </h3>
+                        <p class="text-xs text-white/70 mb-6 leading-relaxed" data-i18n="serv-s3-desc">
+                            Integrated creative, expert media buying, continuous testing, and real outcomes tracking.
+                        </p>
+
+                        <ul class="space-y-2.5 text-xs text-white/80 border-t border-white/15 pt-4 mb-8">
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s3-f1">Omni-Channel Buying (Meta, TikTok)</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s3-f2">Hypothesis-Led Testing</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s3-f3">Creative/Budget Management</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s3-f4">Unbiased Results Dashboards</span></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="switchPage('service-lab')"
+                            class="w-full bg-mavoPowderBlue/15 hover:bg-mavoPowderBlue text-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors border border-mavoPowderBlue/30"
+                            data-i18n="serv-details-btn">
+                            Detailed Program Page
+                        </button>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27m%20interested%20in%20the%20Growth%20Lab%20package."
+                            target="_blank"
+                            class="w-full bg-mavoPowderBlue text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-all block"
+                            data-i18n="serv-cta">
+                            Choose Lab
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Program 4 -->
+                <div class="premium-card text-white p-6 rounded-xl flex flex-col justify-between relative">
+                    <div>
+                        <span
+                            class="text-[10px] tracking-widest text-mavoPowderBlue uppercase font-bold block mb-1">STAGE
+                            04</span>
+                        <h3 class="text-xl font-serif font-bold mb-3 text-white" data-i18n="serv-s4-title">Scale System
+                        </h3>
+                        <p class="text-xs text-white/70 mb-6 leading-relaxed" data-i18n="serv-s4-desc">
+                            Full-service scale engine. Broad strategy, complete content frameworks, pages, and
+                            campaigns.
+                        </p>
+
+                        <ul class="space-y-2.5 text-xs text-white/80 border-t border-white/15 pt-4 mb-8">
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s4-f1">Full Funnel Redesign</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s4-f2">Ongoing Content Operations</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s4-f3">Dedicated Growth Advisor</span></li>
+                            <li class="flex items-center gap-2"><i
+                                    class="fa-solid fa-check text-mavoTeal text-[10px]"></i> <span
+                                    data-i18n="serv-s4-f4">Direct Conversion Rate Sprints</span></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="switchPage('service-scale')"
+                            class="w-full bg-mavoPowderBlue/15 hover:bg-mavoPowderBlue text-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors border border-mavoPowderBlue/30"
+                            data-i18n="serv-details-btn">
+                            Detailed Program Page
+                        </button>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27m%20interested%20in%20the%20Scale%20System%20package."
+                            target="_blank"
+                            class="w-full bg-white/10 hover:bg-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors block"
+                            data-i18n="serv-cta">
+                            Choose System
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Non-Target Brands Box -->
+            <div
+                class="bg-white/30 border border-mavoBlack/10 rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h4 class="font-serif font-bold text-mavoMidnight text-lg" data-i18n="excl-title">Who we do not
+                        serve:</h4>
+                    <p class="text-xs text-mavoMidnight/70 mt-1" data-i18n="excl-desc">We maintain high execution
+                        standards. We do not partner with brands that have:</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span
+                        class="bg-mavoMidnight/10 text-mavoMidnight text-xs px-3 py-1 rounded-full font-semibold border border-mavoMidnight/10"
+                        data-i18n="excl-p1">No ad testing budget</span>
+                    <span
+                        class="bg-mavoMidnight/10 text-mavoMidnight text-xs px-3 py-1 rounded-full font-semibold border border-mavoMidnight/10"
+                        data-i18n="excl-p2">Only request generic social posts</span>
+                    <span
+                        class="bg-mavoMidnight/10 text-mavoMidnight text-xs px-3 py-1 rounded-full font-semibold border border-mavoMidnight/10"
+                        data-i18n="excl-p3">Unwilling to iterate product offers</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= INDIVIDUAL SERVICE: SIGNAL SPRINT ================= -->
+        <section id="view-service-sprint" class="page-view space-y-12">
+            <button onclick="switchPage('services')"
+                class="inline-flex items-center gap-2 text-mavoBlack hover:text-white font-bold text-sm bg-white/35 px-4 py-2 rounded-lg transition-all mb-4 shadow-sm">
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="service-back-btn">Back to All Services</span>
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 space-y-6">
+                    <span
+                        class="text-xs uppercase tracking-widest bg-mavoMidnight text-mavoPowderBlue px-3 py-1 rounded-full font-bold inline-block font-mono">STAGE
+                        01 // DEEP SYSTEM DIAGNOSIS</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="sprint-page-title">Signal
+                        Sprint</h2>
+                    <p class="text-mavoMidnight/80 text-sm md:text-base leading-relaxed" data-i18n="sprint-page-desc">
+                        Our entry-level high-impact diagnosis. Before committing budgets, we audit your customer
+                        journeys, checkout velocity, creative parameters, and competitive placements inside the Saudi &
+                        Gulf ecosystem to map exactly where capital is leaking.
+                    </p>
+
+                    <div class="space-y-4 pt-6 border-t border-mavoBlack/10">
+                        <h4 class="font-serif font-bold text-mavoBlack text-lg" data-i18n="service-includes-title">Core
+                            Sprint Deliverables:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="sprint-del1-t">Technical Funnel Audit</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="sprint-del1-d">Locating friction
+                                    elements, load time dropoffs, and regional pricing discrepancies.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="sprint-del2-t">Creative Roadmap Analysis</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="sprint-del2-d">Examining
+                                    historical hook performance, formats, and regional dialect fit.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="sprint-del3-t">Competitive Benchmarks</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="sprint-del3-d">Evaluating direct
+                                    regional competitors and mapping their active campaigns.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block" data-i18n="sprint-del4-t">The
+                                    Friction Log Blueprint</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="sprint-del4-d">A complete written
+                                    blueprint with immediate actions to optimize ROAS metrics.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="premium-card text-white p-8 rounded-2xl relative overflow-hidden">
+                        <h3 class="text-xl font-serif text-mavoPowderBlue mb-4" data-i18n="service-card-meta-title">
+                            Sprint Parameters</h3>
+                        <ul class="space-y-4 text-xs border-b border-white/10 pb-6 mb-6">
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-duration">Sprint Duration</span>
+                                <span class="font-bold font-mono">10 Operational Days</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-involvement">Client
+                                    Onboarding</span>
+                                <span class="font-bold font-mono">1 Setup Session Only</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-scope">Deliverable Type</span>
+                                <span class="font-bold text-mavoTeal font-mono">Actionable Growth Log</span>
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20reserve%20a%20Signal%20Sprint%20program%20for%20my%20business."
+                            target="_blank"
+                            class="w-full bg-mavoPowderBlue hover:bg-white text-mavoMidnight text-center font-bold text-xs uppercase tracking-wider py-4 rounded-xl block transition-all shadow-md">
+                            Start Signal Sprint
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= INDIVIDUAL SERVICE: CREATIVE ENGINE ================= -->
+        <section id="view-service-engine" class="page-view space-y-12">
+            <button onclick="switchPage('services')"
+                class="inline-flex items-center gap-2 text-mavoBlack hover:text-white font-bold text-sm bg-white/35 px-4 py-2 rounded-lg transition-all mb-4 shadow-sm">
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="service-back-btn">Back to All Services</span>
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 space-y-6">
+                    <span
+                        class="text-xs uppercase tracking-widest bg-mavoMidnight text-mavoPowderBlue px-3 py-1 rounded-full font-bold inline-block font-mono">STAGE
+                        02 // DYNAMIC CREATIVE VELOCITY</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="engine-page-title">Creative
+                        Engine</h2>
+                    <p class="text-mavoMidnight/80 text-sm md:text-base leading-relaxed" data-i18n="engine-page-desc">
+                        Pretty content without conversions is a waste of cash flow. Our Creative Engine produces a
+                        continuous cycle of high-impact ad layouts, dialect-matched UGC videos, static catalog
+                        templates, and copy structures that hold attention and trigger action.
+                    </p>
+
+                    <div class="space-y-4 pt-6 border-t border-mavoBlack/10">
+                        <h4 class="font-serif font-bold text-mavoBlack text-lg" data-i18n="service-includes-title">Core
+                            Engine Deliverables:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block" data-i18n="engine-del1-t">Local
+                                    GCC Dialect UGC</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="engine-del1-d">Vetted creators
+                                    native to Riyadh, Jeddah, and the Gulf speaking to your target audiences.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="engine-del2-t">High-Performance Statics</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="engine-del2-d">Visual assets built
+                                    specifically to lower customer acquisition costs (CAC).</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="engine-del3-t">Direct-Response Ad Copy</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="engine-del3-d">Compelling
+                                    copywriting designed to bypass native user skepticism.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block" data-i18n="engine-del4-t">Weekly
+                                    Hook Experimentation</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="engine-del4-d">Delivering new
+                                    variations weekly to sustain engagement and scale spend.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="premium-card text-white p-8 rounded-2xl relative overflow-hidden">
+                        <h3 class="text-xl font-serif text-mavoPowderBlue mb-4" data-i18n="service-card-meta-title">
+                            Engine Parameters</h3>
+                        <ul class="space-y-4 text-xs border-b border-white/10 pb-6 mb-6">
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-velocity">Monthly Output</span>
+                                <span class="font-bold font-mono">12-16 Premium Assets</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-testing">Testing Support</span>
+                                <span class="font-bold font-mono">Continuous Copy Sprints</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-scope">Primary Focus</span>
+                                <span class="font-bold text-mavoTeal font-mono">Eliminate Ad Fatigue</span>
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27m%20interested%20in%20deploying%20the%20Creative%20Engine%20for%20our%20campaigns."
+                            target="_blank"
+                            class="w-full bg-mavoPowderBlue hover:bg-white text-mavoMidnight text-center font-bold text-xs uppercase tracking-wider py-4 rounded-xl block transition-all shadow-md">
+                            Deploy Creative Engine
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= INDIVIDUAL SERVICE: GROWTH LAB ================= -->
+        <section id="view-service-lab" class="page-view space-y-12">
+            <button onclick="switchPage('services')"
+                class="inline-flex items-center gap-2 text-mavoBlack hover:text-white font-bold text-sm bg-white/35 px-4 py-2 rounded-lg transition-all mb-4 shadow-sm">
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="service-back-btn">Back to All Services</span>
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 space-y-6">
+                    <span
+                        class="text-xs uppercase tracking-widest bg-mavoMidnight text-mavoPowderBlue px-3 py-1 rounded-full font-bold inline-block font-mono">STAGE
+                        03 // FULL FUNNEL MANAGEMENT</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="lab-page-title">Growth Lab
+                    </h2>
+                    <p class="text-mavoMidnight/80 text-sm md:text-base leading-relaxed" data-i18n="lab-page-desc">
+                        Our premium flagship solution. We integrate creative production directly with master media
+                        buying strategies on Meta, TikTok, and Snapchat. We control the data loop ourselves: our buyers
+                        spot creative exhaustion instantly, and our creative team replaces it within 48 hours.
+                    </p>
+
+                    <div class="space-y-4 pt-6 border-t border-mavoBlack/10">
+                        <h4 class="font-serif font-bold text-mavoBlack text-lg" data-i18n="service-includes-title">Core
+                            Lab Deliverables:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="lab-del1-t">Omni-Channel Buying</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="lab-del1-d">Complete management,
+                                    structuring, scaling and attribution on major social channels.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="lab-del2-t">Hypothesis-Led Testing</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="lab-del2-d">Validating angles
+                                    systematically before applying major media budgets.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="lab-del3-t">Attribution API Setups</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="lab-del3-d">Integrating
+                                    server-to-server CAPI elements to assure data security.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block" data-i18n="lab-del4-t">The Live
+                                    Outcomes Dashboard</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="lab-del4-d">Unfiltered access to
+                                    true merchant metrics and acquisition ratios.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="premium-card text-white p-8 rounded-2xl relative overflow-hidden">
+                        <div class="absolute -top-3 left-6 bg-mavoTeal text-mavoMidnight text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded shadow-md"
+                            data-i18n="lab-popular-badge">High Demand</div>
+                        <h3 class="text-xl font-serif text-mavoPowderBlue mb-4 mt-2"
+                            data-i18n="service-card-meta-title">Lab Parameters</h3>
+                        <ul class="space-y-4 text-xs border-b border-white/10 pb-6 mb-6">
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-channels">Supported Networks</span>
+                                <span class="font-bold font-mono">Meta, TikTok, Snapchat</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-loop">Creative Sync Cycle</span>
+                                <span class="font-bold font-mono">48-Hour Rapid Turnaround</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-scale">Performance Scale</span>
+                                <span class="font-bold text-mavoTeal font-mono">Direct ROAS Accountability</span>
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20we%20want%20to%20apply%20for%20partnership%20in%20your%20Growth%20Lab."
+                            target="_blank"
+                            class="w-full bg-mavoPowderBlue hover:bg-white text-mavoMidnight text-center font-bold text-xs uppercase tracking-wider py-4 rounded-xl block transition-all shadow-md">
+                            Apply for Growth Lab
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= INDIVIDUAL SERVICE: SCALE SYSTEM ================= -->
+        <section id="view-service-scale" class="page-view space-y-12">
+            <button onclick="switchPage('services')"
+                class="inline-flex items-center gap-2 text-mavoBlack hover:text-white font-bold text-sm bg-white/35 px-4 py-2 rounded-lg transition-all mb-4 shadow-sm">
+                <i class="fa-solid fa-arrow-left"></i> <span data-i18n="service-back-btn">Back to All Services</span>
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 space-y-6">
+                    <span
+                        class="text-xs uppercase tracking-widest bg-mavoMidnight text-mavoPowderBlue px-3 py-1 rounded-full font-bold inline-block font-mono">STAGE
+                        04 // ENTERPRISE CONVERSION ENGINE</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="scale-page-title">Scale System
+                    </h2>
+                    <p class="text-mavoMidnight/80 text-sm md:text-base leading-relaxed" data-i18n="scale-page-desc">
+                        Our all-inclusive scale partner ecosystem. Built specifically for high-volume GCC retail
+                        operations looking to bypass basic agencies entirely. We redesign your key product funnels,
+                        deploy continuous creative, secure custom landing page infrastructures, and coordinate complete
+                        marketing channels.
+                    </p>
+
+                    <div class="space-y-4 pt-6 border-t border-mavoBlack/10">
+                        <h4 class="font-serif font-bold text-mavoBlack text-lg" data-i18n="service-includes-title">Core
+                            System Deliverables:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="scale-del1-t">Complete Funnel Redesign</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="scale-del1-d">Crafting bespoke,
+                                    high-speed landing pages built purely for direct purchase events.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block" data-i18n="scale-del2-t">Ongoing
+                                    Visual Operations</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="scale-del2-d">Endless production
+                                    flow of UGC, layout tests, pricing bundles, and marketing copy.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="scale-del3-t">Dedicated Growth Advisory</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="scale-del3-d">Direct communication
+                                    channel to a MAVO Labs partner for overall strategy.</span>
+                            </div>
+                            <div class="bg-white/40 p-4 rounded-xl border border-mavoBlack/5 space-y-1">
+                                <span class="text-mavoMidnight font-bold text-sm block"
+                                    data-i18n="scale-del4-t">Conversion Sprints (CRO)</span>
+                                <span class="text-xs text-mavoMidnight/70" data-i18n="scale-del4-d">Constant testing of
+                                    checkout systems, post-purchase flows, and payment triggers.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="premium-card text-white p-8 rounded-2xl relative overflow-hidden">
+                        <h3 class="text-xl font-serif text-mavoPowderBlue mb-4" data-i18n="service-card-meta-title">
+                            System Parameters</h3>
+                        <ul class="space-y-4 text-xs border-b border-white/10 pb-6 mb-6">
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-infrastructure">Page
+                                    Infrastructure</span>
+                                <span class="font-bold font-mono">Custom Coded Nodes</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-meetings">Strategy Sessions</span>
+                                <span class="font-bold font-mono">Weekly System Syncs</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-white/60" data-i18n="service-param-capacity">Availability Limit</span>
+                                <span class="font-bold text-mavoTeal font-mono">Maximum 3 Partners</span>
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20discuss%20joining%20the%20complete%20Scale%20System."
+                            target="_blank"
+                            class="w-full bg-mavoPowderBlue hover:bg-white text-mavoMidnight text-center font-bold text-xs uppercase tracking-wider py-4 rounded-xl block transition-all shadow-md">
+                            Acquire Scale System
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= CALCULATOR VIEW ================= -->
+        <section id="view-calculator" class="page-view space-y-28">
+
+            <div class="max-w-4xl mx-auto relative">
+                <div class="text-center mb-12">
+                    <span
+                        class="text-xs uppercase tracking-widest text-mavoMidnight bg-white border border-mavoBlack/20 px-3 py-1 rounded-full font-bold inline-block mb-2"
+                        data-i18n="calc-tag">// SIMULATION LAB</span>
+                    <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="calc-title">Interactive GCC
+                        Growth Simulator</h2>
+                    <p class="text-mavoMidnight/70 text-sm mt-3 max-w-xl mx-auto font-sans font-medium"
+                        data-i18n="calc-desc">
+                        Input your target metrics to calculate the potential conversion and sales uplift achievable with
+                        a connected system structure.
+                    </p>
+                </div>
+
+                <!-- Simulation interface panel -->
+                <div
+                    class="bg-mavoMidnight text-white border border-white/10 p-6 md:p-8 rounded-2xl relative overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Inputs Grid -->
+                        <div class="space-y-6">
+                            <h4 class="text-lg font-serif text-mavoPowderBlue border-b border-white/10 pb-2 animate-pulse"
+                                data-i18n="calc-input-head">Current Variables</h4>
+
+                            <!-- Monthly spend slider -->
+                            <div>
+                                <div class="flex justify-between text-xs font-bold uppercase text-white/70 mb-2">
+                                    <span data-i18n="calc-label-spend">Monthly Ad Spend</span>
+                                    <span class="text-mavoTeal" id="spendVal">50,000 SAR</span>
+                                </div>
+                                <input type="range" id="spendSlider" min="10000" max="500000" step="5000" value="50000"
+                                    class="w-full accent-mavoPowderBlue bg-white/10 h-1.5 rounded-lg appearance-none cursor-pointer"
+                                    oninput="calculateUplift()">
+                                <div class="flex justify-between text-[10px] text-white/40 mt-1 font-mono">
+                                    <span>10,000</span>
+                                    <span>500,000</span>
+                                </div>
+                            </div>
+
+                            <!-- ROAS slider -->
+                            <div>
+                                <div class="flex justify-between text-xs font-bold uppercase text-white/70 mb-2">
+                                    <span data-i18n="calc-label-roas">Current ROAS</span>
+                                    <span class="text-mavoTeal" id="roasVal">1.8x</span>
+                                </div>
+                                <input type="range" id="roasSlider" min="1.0" max="5.0" step="0.1" value="1.8"
+                                    class="w-full accent-mavoPowderBlue bg-white/10 h-1.5 rounded-lg appearance-none cursor-pointer"
+                                    oninput="calculateUplift()">
+                                <div class="flex justify-between text-[10px] text-white/40 mt-1 font-mono">
+                                    <span>1.0x</span>
+                                    <span>5.0x</span>
+                                </div>
+                            </div>
+
+                            <!-- Target selector -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-white/70 mb-2"
+                                    data-i18n="calc-label-tier">Target Strategy Tier</label>
+                                <select id="tierSelector" onchange="calculateUplift()"
+                                    class="w-full bg-mavoMidnight border border-white/10 p-3.5 rounded-xl text-sm focus:outline-none focus:border-mavoPowderBlue text-white font-semibold transition-all">
+                                    <option value="conservative" data-i18n="calc-opt-1">Conservative System Uplift
+                                        (+20%)</option>
+                                    <option value="optimal" selected data-i18n="calc-opt-2">Optimal Engine Scaling
+                                        (+35%)</option>
+                                    <option value="aggressive" data-i18n="calc-opt-3">Aggressive Scale System (+50%)
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Computes panel -->
+                        <div class="bg-white/5 border border-white/10 p-6 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-xs uppercase tracking-widest text-white/40 block mb-1"
+                                    data-i18n="calc-out-sub">Estimated Uplift Outcome</span>
+                                <h4 class="text-2xl font-serif text-mavoPowderBlue" data-i18n="calc-out-title">Simulated
+                                    Projections</h4>
+                                <p class="text-xs text-white/60 mt-1 font-sans" data-i18n="calc-out-desc">Calculated
+                                    based on real benchmark averages from high-performing GCC beauty & apparel
+                                    campaigns.</p>
+                            </div>
+
+                            <!-- Calculations table readout -->
+                            <div class="my-6 space-y-4">
+                                <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                                    <span class="text-xs text-white/60" data-i18n="calc-out-new-roas">Target ROAS
+                                        Stage</span>
+                                    <span class="text-xl font-bold text-mavoTeal font-mono" id="targetRoas">2.43x</span>
+                                </div>
+                                <div class="flex justify-between items-end border-b border-white/5 pb-2">
+                                    <span class="text-xs text-white/60" data-i18n="calc-out-revenue">Estimated Revenue
+                                        Gain</span>
+                                    <span class="text-xl font-bold text-mavoTeal font-mono" id="revGain">+31,500
+                                        SAR</span>
+                                </div>
+                                <div class="flex justify-between items-end pb-2">
+                                    <span class="text-xs text-white/60" data-i18n="calc-out-rec">Recommended
+                                        Track</span>
+                                    <span class="text-xs font-bold text-white bg-mavoDeepBlue px-2.5 py-0.5 rounded"
+                                        id="recPackage">Growth Lab</span>
+                                </div>
+                            </div>
+
+                            <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27ve%20just%20used%20your%20ROI%20Simulator%20and%20I%27d%20like%20to%20review%20my%20numbers%20with%20you."
+                                target="_blank"
+                                class="w-full bg-mavoPowderBlue text-mavoMidnight text-center font-bold text-xs uppercase tracking-wider py-4 rounded-xl block hover:bg-white transition-all duration-300 shadow-md"
+                                data-i18n="calc-cta-btn">
+                                Book Growth Strategy Session
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= CONTACT US VIEW (FORMLESS) ================= -->
+        <section id="view-contact" class="page-view space-y-12">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span
+                    class="text-xs uppercase tracking-widest bg-mavoMidnight text-mavoPowderBlue px-3.5 py-1.5 rounded-full font-bold inline-block font-mono"
+                    data-i18n="contact-tag">// SECURE CHANNELS</span>
+                <h2 class="text-3xl md:text-5xl font-serif text-mavoBlack" data-i18n="contact-title">Contact Mavo Labs
+                </h2>
+                <p class="text-mavoMidnight/70 text-sm md:text-base font-medium" data-i18n="contact-desc">
+                    Direct, secure lines to our growth engineers. No long waiting queues, no tedious forms. Contact us
+                    directly through your preferred channel.
+                </p>
+            </div>
+
+            <!-- Strategic Contact Channels -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto pt-6">
+                <!-- WhatsApp Hotlink Card -->
+                <div
+                    class="premium-card text-white p-6 rounded-xl flex flex-col justify-between hover:border-mavoTeal/40 transition-colors">
+                    <div>
+                        <div
+                            class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-mavoTeal mb-4">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-white" data-i18n="contact-wa-title">WhatsApp
+                            Hotline</h3>
+                        <p class="text-xs text-white/70 mt-2 leading-relaxed" data-i18n="contact-wa-desc">
+                            Direct connection for general requests, live campaign audits, and package inquiries.
+                        </p>
+                    </div>
+                    <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20connect%20with%20a%20Growth%20Advisor."
+                        target="_blank"
+                        class="mt-6 w-full bg-mavoTeal text-mavoMidnight hover:bg-white text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors inline-block"
+                        data-i18n="contact-wa-action">
+                        Start Chat Now
+                    </a>
+                </div>
+
+                <!-- Direct Email Card -->
+                <div
+                    class="premium-card text-white p-6 rounded-xl flex flex-col justify-between hover:border-mavoPowderBlue/40 transition-colors">
+                    <div>
+                        <div
+                            class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-mavoPowderBlue mb-4">
+                            <i class="fa-solid fa-envelope text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-white" data-i18n="contact-email-title">Encrypted
+                            Email</h3>
+                        <p class="text-xs text-white/70 mt-2 leading-relaxed" data-i18n="contact-email-desc">
+                            For technical integration data logs, merchant system access, and corporate partnership
+                            scopes.
+                        </p>
+                    </div>
+                    <a href="mailto:systems@mavolabs.com"
+                        class="mt-6 w-full bg-white/10 hover:bg-white hover:text-mavoMidnight text-center text-xs font-bold uppercase py-2.5 rounded-lg transition-colors inline-block"
+                        data-i18n="contact-email-action">
+                        Send Email
+                    </a>
+                </div>
+
+                <!-- HQ Address Card -->
+                <div class="premium-card text-white p-6 rounded-xl flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-mavoDeepBlue mb-4">
+                            <i class="fa-solid fa-location-dot text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-white" data-i18n="contact-hq-title">Headquarters
+                        </h3>
+                        <p class="text-xs text-white/70 mt-2 leading-relaxed font-mono" data-i18n="contact-hq-desc">
+                            Riyadh, Kingdom of Saudi Arabia.<br>
+                            Al-Mursalat District, Executive Office Nodes.
+                        </p>
+                    </div>
+                    <span
+                        class="mt-6 w-full border border-white/10 text-white/50 text-center text-[10px] font-bold uppercase py-2.5 rounded-lg inline-block font-mono cursor-default"
+                        data-i18n="contact-hq-action">
+                        In-Person by Appointment
+                    </span>
+                </div>
+
+                <!-- Operating Hours Card -->
+                <div class="premium-card text-white p-6 rounded-xl flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-mavoPowderBlue mb-4">
+                            <i class="fa-solid fa-clock text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-serif font-bold text-white" data-i18n="contact-hours-title">Operational
+                            Hours</h3>
+                        <p class="text-xs text-white/70 mt-2 leading-relaxed" data-i18n="contact-hours-desc">
+                            Sunday – Thursday<br>
+                            09:00 AM – 06:00 PM (GMT+3)
+                        </p>
+                    </div>
+                    <span
+                        class="mt-6 w-full bg-white/5 text-mavoTeal text-center text-[10px] font-bold uppercase py-2.5 rounded-lg inline-block font-mono border border-white/5 cursor-default">
+                        ⚡ Server active 24/7
+                    </span>
+                </div>
+            </div>
+
+            <!-- Live Regional Map Node -->
+            <div class="max-w-6xl mx-auto pt-6">
+                <div
+                    class="bg-mavoMidnight text-white border border-white/10 p-8 rounded-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-3">
+                        <h3 class="text-xl font-serif text-mavoPowderBlue" data-i18n="contact-map-title">GCC Unified
+                            Regional Operations</h3>
+                        <p class="text-xs text-white/70 max-w-lg leading-relaxed font-sans"
+                            data-i18n="contact-map-desc">
+                            We deploy on-premise performance parameters and custom tracking models directly for stores
+                            trading in the Kingdom of Saudi Arabia, United Arab Emirates, Bahrain, Kuwait, Qatar, and
+                            Oman.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white/5 px-4 py-3 rounded-xl border border-white/10">
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
+                        <span class="text-xs font-bold font-mono tracking-wider" data-i18n="contact-map-status">RIYADH
+                            ENGINE RUNNING</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Direct Conversion Call-to-Action Panel -->
+    <section class="py-24 px-6 mavo-pattern text-center relative z-10">
+        <div
+            class="max-w-4xl mx-auto bg-mavoMidnight text-white p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
+            <!-- Vector Glow spot -->
+            <div
+                class="absolute -bottom-20 -left-20 w-64 h-64 bg-mavoPowderBlue/30 rounded-full ambient-glow transition-all group-hover:scale-125">
+            </div>
+
+            <div class="relative z-10 space-y-6">
+                <span class="text-xs uppercase tracking-widest text-mavoPowderBlue font-mono font-bold"
+                    data-i18n="cta-tag">THE DECISION MATRIX</span>
+                <h2 class="text-3xl md:text-5xl font-serif text-white max-w-2xl mx-auto leading-tight"
+                    data-i18n="cta-title">
+                    Stop burning ad spend on pretty social posts.
+                </h2>
+                <p class="text-sm md:text-base text-white/80 max-w-lg mx-auto leading-relaxed font-sans font-medium"
+                    data-i18n="cta-desc">
+                    Get an objective, data-driven analysis of your product offers, content hooks, and funnel
+                    performance. Fully transparent, zero pressure.
+                </p>
+
+                <!-- Value Highlights check row -->
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-white/60 font-medium py-2">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-mavoTeal"></i> <span
+                            data-i18n="cta-check-1">Delivered via WhatsApp</span></span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-mavoTeal"></i> <span
+                            data-i18n="cta-check-2">Actionable hook audit</span></span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-mavoTeal"></i> <span
+                            data-i18n="cta-check-3">Completely Free</span></span>
+                </div>
+
+                <div class="pt-4">
+                    <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20request%20a%20free%20growth%20audit."
+                        target="_blank"
+                        class="inline-flex items-center gap-2 bg-mavoPowderBlue hover:bg-white text-mavoMidnight font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl transition-all duration-300 shadow-xl hover:-translate-y-0.5">
+                        <span data-i18n="cta-primary-btn">Request Free Growth Audit</span>
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Footer -->
+    <footer class="bg-mavoBlack text-white border-t border-white/5 py-16 px-6 relative z-10 w-full">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand metadata - LOGO IMAGE REPLACED -->
+                <div class="md:col-span-2 space-y-6">
+                    <img src="https://i.postimg.cc/prVj0PVt/MAVO-02.png" alt="MAVO Footer Logo"
+                        class="h-10 w-auto object-contain brightness-0 invert"
+                        onerror="this.onerror=null; this.src='https://placehold.co/120x40/0d0d0d/ffffff?text=MAVO+LABS';">
+
+                    <p class="text-white/60 text-sm max-w-sm leading-relaxed" data-i18n="footer-desc">
+                        Mavo Labs is a creative performance lab turning digital attention into measurable sales
+                        outcomes. We build connected growth systems, direct ads, and conversion strategies for GCC
+                        brands.
+                    </p>
+
+                    <div class="flex items-center gap-3">
+                        <a href="https://linkedin.com" target="_blank"
+                            class="text-white/50 hover:text-mavoPowderBlue text-lg transition-colors"
+                            aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://instagram.com" target="_blank"
+                            class="text-white/50 hover:text-mavoPowderBlue text-lg transition-colors"
+                            aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://twitter.com" target="_blank"
+                            class="text-white/50 hover:text-mavoPowderBlue text-lg transition-colors"
+                            aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                <!-- Navigation Columns -->
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-mavoPowderBlue font-bold mb-4">// NAVIGATION</h4>
+                    <ul class="space-y-2 text-sm text-white/60">
+                        <li><a href="#home" onclick="switchPage('home'); return false;"
+                                class="hover:text-white transition-colors" data-i18n="nav-home">Home</a></li>
+                        <li><a href="#about" onclick="switchPage('about'); return false;"
+                                class="hover:text-white transition-colors" data-i18n="nav-about">About Agency</a></li>
+                        <li><a href="#services" onclick="switchPage('services'); return false;"
+                                class="hover:text-white transition-colors" data-i18n="nav-services">Services</a></li>
+                        <li><a href="#calculator" onclick="switchPage('calculator'); return false;"
+                                class="hover:text-white transition-colors" data-i18n="nav-calc">ROI Simulator</a></li>
+                        <li><a href="#contact" onclick="switchPage('contact'); return false;"
+                                class="hover:text-white transition-colors" data-i18n="nav-contact">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Address & regional metadata -->
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-mavoPowderBlue font-bold mb-4">// KSA & GCC</h4>
+                    <p class="text-sm text-white/60 leading-relaxed" data-i18n="footer-reach">
+                        Premium Conversion Engineering.<br>
+                        Riyadh, Kingdom of Saudi Arabia.<br>
+                        <span class="block mt-2">📧 systems@mavolabs.com</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Disclaimer Bottom Banner -->
+            <div
+                class="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-white/40">
+                <span data-i18n="footer-copyright">© 2026 MAVO Labs. All rights reserved. Creative Performance
+                    Agency.</span>
+                <span class="flex items-center gap-2">
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-mavoTeal/60 animate-pulse"></span>
+                    <span data-i18n="footer-validation">Verified System Engine Version 2.26</span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Action Widget Rebuilt to match site brand identity (Teal & Midnight Black) -->
+    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        <a href="https://wa.me/966500000000?text=Hi%20MAVO%20Labs,%20I%27d%20like%20to%20get%20a%20free%20growth%20audit%20for%20my%20store."
+            target="_blank"
+            class="group relative flex items-center gap-3 bg-mavoMidnight hover:bg-mavoBlack text-white border border-mavoPowderBlue/20 px-4 py-3.5 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none"
+            aria-label="Contact us on WhatsApp">
+            <!-- Glow effect -->
+            <span
+                class="absolute inset-0 rounded-full bg-mavoTeal/15 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+
+            <span
+                class="text-xs font-bold tracking-wider hidden md:inline-block max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-out whitespace-nowrap"
+                data-i18n="float-wa-text">
+                Chat with Growth Advisor
+            </span>
+            <i class="fa-brands fa-whatsapp text-2xl text-mavoTeal group-hover:scale-110 transition-transform"></i>
+            <span
+                class="absolute -top-1 -right-1 w-3 h-3 bg-mavoTeal rounded-full border-2 border-mavoMidnight animate-pulse"></span>
+        </a>
+    </div>
+
+    <script>
+        // Dual-Language Localized Dictionary
+        const translations = {
+            'en': {
+                'top-bar': 'EXPERIMENT RUNNING: GCC DTC E-COMMERCE CONVERSION ENGINE 2026',
+                'nav-home': 'Home',
+                'nav-about': 'About Agency',
+                'nav-services': 'Services',
+                'nav-calc': 'ROI Simulator',
+                'nav-contact': 'Contact Us',
+                'nav-cta': 'Request Free Audit',
+                'hero-tagline': 'MOVE ATTENTION. VALIDATE OUTCOMES.',
+                'hero-head-1': "Pretty content doesn't sell.",
+                'hero-head-2': 'Systems do.',
+                'hero-subtext': 'Mavo Labs transforms digital friction into premium conversion systems. Crafted strictly for high-yield GCC e-commerce brands striving to eliminate wasteful campaigns and deploy scientific creative models.',
+                'prop-promise-label': 'The Promise',
+                'prop-promise-value': 'Guaranteed Proof',
+                'prop-market-label': 'Primary Market',
+                'prop-market-value': 'KSA & GCC First',
+                'prop-role-label': 'Lab Role',
+                'prop-role-value': 'Growth Partners',
+                'hero-cta-primary': 'Start Free Audit',
+                'hero-cta-secondary': 'Simulate Your Growth',
+                'widget-title': 'Creative Performance Lab',
+                'widget-desc': 'We develop high-performance creative assets integrated perfectly with data-backed media buying models to stop consumer scrolling.',
+                'widget-stat-1-label': 'Scaling Onboarding Time',
+                'widget-stat-1-value': '45 Days Engine Build',
+                'widget-stat-2-label': 'GCC Testing ROAS Uplift',
+                'widget-stat-2-value': '+34% Avg Over Baseline',
+                'widget-status': 'SYS_STATUS: OPTIMAL',
+                'widget-active': 'ACTIVE EXPERIMENTS: 18',
+                'trust-label': 'TRUSTED BY POWERHOUSE BRANDS ACROSS THE GCC',
+                'bottlenecks-tag': 'CONVERSION ANALYSIS',
+                'bottlenecks-title': 'Eliminate Hidden Waste',
+                'bottlenecks-desc': 'Many DTC brands scale budgets blindly on platforms that misrepresent direct attribution. Our audit process immediately exposes key leakage nodes.',
+                'waste-node1-title': 'Attribution Leaks',
+                'waste-node1-desc': 'Standard channels overlap calculations, making brands think they make more money from specific ad variables than they actually do.',
+                'waste-node2-title': 'Fatigued Ad Copy',
+                'waste-node2-desc': 'Using decorative graphics rather than targeted angles that handle primary regional objections reduces direct ROI velocity.',
+                'waste-node3-title': 'Unoptimized Flows',
+                'waste-node3-desc': 'Sending premium GCC leads to basic homepages rather than highly persuasive, fast product landing pages burns acquisition budgets.',
+                'blueprint-tag': 'OPERATIONAL DIAGRAM',
+                'blueprint-title': 'Creative Synthesis Loop',
+                'blueprint-desc': 'We structure campaign elements dynamically, feeding customer performance data directly back into weekly asset production.',
+                'chart-niche-head': 'Optimized Media Funnels',
+                'chart-niche-body': 'Choose a market sector profile inside our simulator dashboard to view historical conversions plotted against average GCC baselines.',
+                'diagram-step1': 'Analyze product metrics and determine demographic margins.',
+                'diagram-step2': 'Formulate 5 dynamic hooks matching local GCC dialects.',
+                'diagram-step3': 'Run automated bid parameters on high-intent targets.',
+                'chart-baseline': 'Baseline Conversion',
+                'chart-mavo': 'MAVO Optimized Conversion',
+                'week-0': 'Day 0',
+                'week-2': 'Day 15',
+                'week-4': 'Day 30',
+                'week-6': 'Day 45 (Engine Synced)',
+                'success-tag': 'VERIFIED ARCHIVES',
+                'success-title': 'GCC Success Portfolios',
+                'success-desc': 'Absolute outcomes tracked and formatted across major الخليج (Gulf) retail campaigns. No vanity metrics — strictly scaled spend and attributed cash flow.',
+                'case1-title': 'Al-Sultan Premium Cosmetics',
+                'case1-desc': 'How we restructured stagnant paid social campaigns to capture local high-spend shoppers, using dialect-based UGC format parameters.',
+                'case2-title': 'Oasis Apparel Group',
+                'case2-desc': 'Eliminating overlapping conversion attribution tracking nodes to optimize landing pages and secure stable customer acquisitions.',
+                'case3-title': 'Desert Bloom Botanicals',
+                'case3-desc': 'Leveraging the full Mavo Growth Lab system to transition an organic local brand into a high-volume regional digital merchant.',
+                'faq-tag': 'PERFORMANCE FAQS',
+                'faq-title': 'Strategic Insights',
+                'faq-desc': 'Answering the core operational questions of high-volume DTC and lead generation merchants.',
+                'acc1-question': 'How does Mavo Labs handle tracking post-iOS 14.5 attribute loss?',
+                'acc1-answer': 'We completely bypass direct browser-based cookie tracking structures. By implementing premium server-side conversion API setups and integrating dynamic customer attribution dashboards, we cross-reference real server sales matches with spent advertising parameters.',
+                'acc2-question': 'What format variations do you build during campaign testing?',
+                'acc2-answer': 'Every sprint generates at least 5 customized hook versions for each main creative angle. We vary static layouts, dynamic product carousels, and local Gulf user-generated videos (UGC) to optimize direct consumer interest.',
+                'acc3-question': 'Do you require long-term binding marketing retainers?',
+                'acc3-answer': 'No. We scale based strictly on performance milestones. If we fail to demonstrate direct attributed conversion improvement or target ROAS metrics within established testing cycles, partners have complete flexibility.',
+                'blue-tag': 'STRATEGIC FLOW',
+                'blue-title': 'E-Commerce Blueprint',
+                'blue-p1-title': 'Funnel Diagnosis',
+                'blue-p1-desc': 'We deploy absolute technical tracking, auditing every product page visual friction point and identifying leaky dropoffs.',
+                'blue-p2-title': 'Creative Synthesis',
+                'blue-p2-desc': 'We engineer specific visual patterns and psychological hooks tailored exactly for high-spending demographics in Saudi & Gulf.',
+                'blue-p3-title': 'Omni scale launch',
+                'blue-p3-desc': 'Unified delivery of programmatic campaigns, dynamic product feeds, and algorithmic bidding protocols to stabilize acquisition cost.',
+                'about-tagline': '// THE FOUNDATION',
+                'about-title': 'About Mavo Labs',
+                'about-intro': 'Most agencies focus on pretty, decorative layouts that inflate vanity views. We construct unified content systems designed to scale real revenue.',
+                'about-meta': 'Every visual asset must carry conversion weight. If an asset cannot generate conversion statistics, it does not proceed to live distribution.',
+                'about-v1-title': 'Arithmetic Performance',
+                'about-v1-desc': 'We replace aesthetic assumptions with continuous testing parameters and analytical charts.',
+                'about-v2-title': 'GCC Customization',
+                'about-v2-desc': 'Deep regional analysis mapping local slang, delivery, and cultural markers for maximum alignment.',
+                'about-v3-title': 'Hyper-Velocity Execution',
+                'about-v3-desc': 'Fast asset rendering, continuous testing, and real-time optimization without creative slowdowns.',
+                'diff-traditional-badge': 'The Old Agency Model',
+                'diff-traditional-title-text': 'The Typical Agency',
+                'diff-t-1': '<strong>Scattered services:</strong> Siloed departments executing generic agendas.',
+                'diff-t-2': '<strong>Random Social Postings:</strong> Building calendars without sales conversion goals.',
+                'diff-t-3': '<strong>Pure Aesthetic Designs:</strong> Creating visual decor with no performance checks.',
+                'diff-t-4': '<strong>Vague Dashboard Reporting:</strong> Concealing outcomes behind views and metrics.',
+                'diff-mavo-badge': 'The Mavo Model',
+                'diff-mavo-title': 'Mavo Labs',
+                'diff-m-1': '<strong>Unified Growth Systems:</strong> Linking creative, media buying, and analytics.',
+                'diff-m-2': '<strong>Conversion Creative:</strong> Building tailored assets crafted directly to sell products.',
+                'diff-m-3': '<strong>Tested Content Angles:</strong> Ruthless experimentation with hooks, formats, and copywriting.',
+                'diff-m-4': '<strong>Clear Outcome Reports:</strong> Unfiltered data and exact learnings from every sprint.',
+                'values-sub': '// CODE OF CONDUCT',
+                'values-title': 'Six Lab Guidelines',
+                'val-1-title': 'Proof over noise',
+                'val-1-desc': 'We prove commercial impact. We do not celebrate superficial impressions or vanity numbers.',
+                'val-2-title': 'Creative with teeth',
+                'val-2-desc': 'Creative is an idea with an sharp angle and clear message — specifically built to sell, never to decorate.',
+                'val-3-title': 'Systems beat random posts',
+                'val-3-desc': 'We build marketing systems that map out the full purchase journey, not random daily calendars.',
+                'val-4-title': 'Sharp honesty',
+                'val-4-desc': 'We tell clients the absolute truth, even when the bottleneck is their offer, checkout page, or price model.',
+                'val-5-title': 'Test, learn, move',
+                'val-5-desc': 'Every ad project is an analytical experiment. We test and evaluate hooks, landing pages, and formats.',
+                'val-6-title': 'Premium discipline',
+                'val-6-desc': 'Premium isn\'t about using gold or shiny colors. It\'s knowing when to delete elements. Simpler and sharper.',
+                'service-tag': 'LAB SERVICES',
+                'service-title': 'Built to Scale',
+                'service-desc': 'Clear frameworks mapped to your current e-commerce stage. No complex retainers or vague scopes.',
+                'serv-s1-title': 'Signal Sprint',
+                'serv-s1-desc': 'Complete business diagnosis & funnel conversion roadmap to pinpoint bottlenecks.',
+                'serv-s1-f1': 'Funnel Strategy Audit',
+                'serv-s1-f2': 'Creative Roadmap Analysis',
+                'serv-s1-f3': 'Competitive Benchmarks',
+                'serv-s1-f4': 'Immediate Action Plan',
+                'serv-s2-title': 'Creative Engine',
+                'serv-s2-desc': 'Ongoing production of high-performance ad formats and hooks tested specifically for the GCC.',
+                'serv-s2-f1': 'UGC Video Blueprints',
+                'serv-s2-f2': 'High-Performance Statics',
+                'serv-s2-f3': 'Direct-Response Ad Copy',
+                'serv-s2-f4': 'Weekly Hook Experimentation',
+                'serv-s3-title': 'Growth Lab',
+                'serv-s3-desc': 'Integrated creative, expert media buying, continuous testing, and real outcomes tracking.',
+                'serv-s3-f1': 'Omni-Channel Buying (Meta, TikTok)',
+                'serv-s3-f2': 'Hypothesis-Led Testing',
+                'serv-s3-f3': 'Creative/Budget Management',
+                'serv-s3-f4': 'Unbiased Results Dashboards',
+                'serv-s4-title': 'Scale System',
+                'serv-s4-desc': 'Full-service scale engine. Broad strategy, complete content frameworks, pages, and campaigns.',
+                'serv-s4-f1': 'Full Funnel Redesign',
+                'serv-s4-f2': 'Ongoing Content Operations',
+                'serv-s4-f3': 'Dedicated Growth Advisor',
+                'serv-s4-f4': 'Direct Conversion Rate Sprints',
+                'serv-popular': 'Most Requested',
+                'serv-cta': 'Choose Program',
+                'serv-details-btn': 'Detailed Program Page',
+                'excl-title': 'Who we do not serve:',
+                'excl-desc': 'We maintain high execution standards. We do not partner with brands that have:',
+                'excl-p1': 'No ad testing budget',
+                'excl-p2': 'Only request generic social posts',
+                'excl-p3': 'Unwilling to iterate product offers',
+                'calc-tag': '// SIMULATION LAB',
+                'calc-title': 'Interactive GCC Growth Simulator',
+                'calc-desc': 'Input your target metrics to calculate the potential conversion and sales uplift achievable with a connected system structure.',
+                'calc-input-head': 'Current Variables',
+                'calc-label-spend': 'Monthly Ad Spend',
+                'calc-label-roas': 'Current ROAS',
+                'calc-label-tier': 'Target Strategy Tier',
+                'calc-opt-1': 'Conservative System Uplift (+20%)',
+                'calc-opt-2': 'Optimal Engine Scaling (+35%)',
+                'calc-opt-3': 'Aggressive Scale System (+50%)',
+                'calc-out-sub': 'Estimated Uplift Outcome',
+                'calc-out-title': 'Simulated Projections',
+                'calc-out-desc': 'Calculated based on real benchmark averages from high-performing GCC beauty & apparel campaigns.',
+                'calc-out-new-roas': 'Target ROAS Stage',
+                'calc-out-revenue': 'Estimated Revenue Gain',
+                'calc-out-rec': 'Recommended Track',
+                'calc-cta-btn': 'Book Growth Strategy Session',
+                'cta-tag': 'THE DECISION MATRIX',
+                'cta-title': 'Stop burning ad spend on pretty social posts.',
+                'cta-desc': 'Get an objective, data-driven analysis of your product offers, content hooks, and funnel performance. Fully transparent, zero pressure.',
+                'cta-check-1': 'Delivered via WhatsApp',
+                'cta-check-2': 'Actionable hook audit',
+                'cta-check-3': 'Completely Free',
+                'cta-primary-btn': 'Request Free Growth Audit',
+                'footer-desc': 'Mavo Labs is a creative performance lab turning digital attention into measurable sales outcomes. We build connected growth systems, direct ads, and conversion strategies for GCC brands.',
+                'footer-reach': 'Premium Conversion Engineering.<br>Riyadh, Kingdom of Saudi Arabia.<br><span class="block mt-2">📧 systems@mavolabs.com</span>',
+                'footer-copyright': '© 2026 MAVO Labs. All rights reserved. Creative Performance Agency.',
+                'footer-validation': 'Verified System Engine Version 2.26',
+                // New Contact Page & Dedicated Service translation tags
+                'contact-tag': '// DIRECT COMMUNICATION',
+                'contact-title': 'Direct Channels',
+                'contact-desc': 'Direct, secure communication lines with our growth architects. No ticket queue structures or complex input forms.',
+                'contact-wa-title': 'WhatsApp Hotline',
+                'contact-wa-desc': 'Direct line for general inquiries, immediate audits, and package alignment updates.',
+                'contact-wa-action': 'Secure Connection',
+                'contact-email-title': 'Secure Email Node',
+                'contact-email-desc': 'For data logs, operational configurations, and corporate contracts.',
+                'contact-email-action': 'Send Email',
+                'contact-hq-title': 'Headquarters',
+                'contact-hq-desc': 'Riyadh, Kingdom of Saudi Arabia. Executive business center.',
+                'contact-hq-action': 'Appointments Only',
+                'contact-hours-title': 'Active Hours',
+                'contact-hours-desc': 'Sunday – Thursday // 09:00 AM – 06:00 PM (KSA time)',
+                'contact-map-title': 'Comprehensive Middle East Deployment',
+                'contact-map-desc': 'We execute targeted media campaigns, regional conversions, and optimized landing sites specifically configured for KSA, UAE, Qatar, Kuwait, Bahrain, and Oman.',
+                'contact-map-status': 'RIYADH ENGINE RUNNING',
+                'service-back-btn': 'Back to All Services',
+                'service-includes-title': 'Core Service Deliverables:',
+                'service-card-meta-title': 'Program Parameters',
+                'service-param-duration': 'Sprint Duration',
+                'service-param-involvement': 'Client Onboarding',
+                'service-param-scope': 'Deliverable Type',
+                'sprint-page-title': 'Signal Sprint Stage',
+                'sprint-page-desc': 'Our targeted operational evaluation. Before dedicating significant budgets, we review active channels, consumer dropoffs, content angles, and competitive placements.',
+                'sprint-del1-t': 'Technical Funnel Audit',
+                'sprint-del1-d': 'Evaluating page performance, friction parameters, and region-specific conversion rates.',
+                'sprint-del2-t': 'Creative Baseline Audit',
+                'sprint-del2-d': 'Analyzing hook patterns, visual layouts, and demographic fit.',
+                'sprint-del3-t': 'GCC Competitive Intel',
+                'sprint-del3-d': 'Tracking other active brands within the Gulf region.',
+                'sprint-del4-t': 'Immediate Action Log',
+                'sprint-del4-d': 'Actionable, plain-text changes to quickly recover leaking margins.',
+                'engine-page-title': 'Creative Engine Stage',
+                'engine-page-desc': 'A steady stream of visual conversion resources. The Creative Engine continuously generates, edits, and delivers target formats, UGC blueprints, and psychological hooks.',
+                'engine-del1-t': 'Local UGC Blueprints',
+                'engine-del1-d': 'Direct collaboration with native-speaking GCC content creators.',
+                'engine-del2-t': 'High-Performance Statics',
+                'engine-del2-d': 'Graphic and photo layouts proven to lower acquisition friction.',
+                'engine-del3-t': 'Direct Response Copy',
+                'engine-del3-d': 'Tested visual copy and descriptions that target regional buyers.',
+                'engine-del4-t': 'Sustained Scale Options',
+                'engine-del4-d': 'Ongoing hook experiments to keep campaign fatigue minimal.',
+                'service-param-velocity': 'Asset Velocity',
+                'service-param-testing': 'Testing Sprints',
+                'service-param-scope': 'Core Objective',
+                'lab-page-title': 'Growth Lab Stage',
+                'lab-page-desc': 'The complete performance system. We combine active content production with modern media buying on Meta, TikTok, and Snapchat. Information loops seamlessly between platforms.',
+                'lab-del1-t': 'Media Buying Ops',
+                'lab-del1-d': 'Full tactical media buying, configuration, budget scaling, and data analysis.',
+                'lab-del2-t': 'Hypothesis-Led Testing',
+                'lab-del2-d': 'Rigorous testing of visual variations before major scaling.',
+                'lab-del3-t': 'Server-Side Conversions',
+                'lab-del3-d': 'Direct API integrations to bypass browser tracking loss.',
+                'lab-del4-t': 'Sprints & Optimization',
+                'lab-del4-d': 'Rapid, ongoing iterations of high-performing creative assets.',
+                'lab-popular-badge': 'High Demand',
+                'service-param-channels': 'Platforms Managed',
+                'service-param-loop': 'Performance Loop',
+                'service-param-scale': 'Success Criteria',
+                'scale-page-title': 'Scale System Stage',
+                'scale-page-desc': 'The premium full-service growth ecosystem. For established GCC retail looking for a master execution partner. We build custom pages, manage complete campaigns, and guide positioning.',
+                'scale-del1-t': 'Custom Coded Landing Pages',
+                'scale-del1-d': 'Ultra-fast pages built strictly for direct purchase conversion.',
+                'scale-del2-t': 'Full-Scale Visual Studio',
+                'scale-del2-d': 'Continuous production of layouts, UGC videos, copy, and campaigns.',
+                'scale-del3-t': 'Direct Growth Advisor',
+                'scale-del3-d': 'Strategy sessions to optimize product offers and checkout flows.',
+                'scale-del4-t': 'Ongoing Optimization',
+                'scale-del4-d': 'Continuous performance updates to lower customer acquisition costs.',
+                'service-param-infrastructure': 'Site Framework',
+                'service-param-meetings': 'Sync Frequency',
+                'service-param-capacity': 'Partner Availability',
+                'float-wa-text': 'Chat with Growth Advisor'
+            },
+            'ar': {
+                'top-bar': 'التجربة جارية: محرك تحويل التجارة الإلكترونية في الخليج العربي ٢٠٢٦',
+                'nav-home': 'الرئيسية',
+                'nav-about': 'عن المختبر',
+                'nav-services': 'الخدمات',
+                'nav-calc': 'محاكاة العائد',
+                'nav-contact': 'اتصل بنا',
+                'nav-cta': 'طلب تدقيق مجاني',
+                'hero-tagline': 'حرك الانتباه. ثبّت النتائج.',
+                'hero-head-1': "المحتوى الجميل وحده لا يبيع.",
+                'hero-head-2': 'بل الأنظمة هي التي تبيع.',
+                'hero-subtext': 'مختبر مافو يحول الانتباه الرقمي إلى نتائج مبيعات ملموسة. صُمم خصيصًا للعلامات التجارية الطموحة للتجارة الإلكترونية في المملكة العربية السعودية والخليج العربي التي تعاني من هدر ميزانيات الإعلان دون تحقيق مبيعات.',
+                'prop-promise-label': 'الوعد الرئيسي',
+                'prop-promise-value': 'إثباتات ملموسة',
+                'prop-market-label': 'السوق المستهدف',
+                'prop-market-value': 'السعودية والخليج العربي',
+                'prop-role-label': 'دور المختبر',
+                'prop-role-value': 'شريك نمو متكامل',
+                'hero-cta-primary': 'ابدأ التدقيق المجاني',
+                'hero-cta-secondary': 'محاكاة نمو متجرك',
+                'widget-title': 'مختبر الأداء الإبداعي',
+                'widget-desc': 'نحن نطور أصولاً إبداعية عالية التأثير متكاملة تماماً مع نماذج شراء إعلانية قائمة على البيانات لإيقاف التمرير والبدء في البيع.',
+                'widget-stat-1-label': 'فترة بناء وتكامل المحرك',
+                'widget-stat-1-value': '٤٥ يوماً من البناء المتكامل',
+                'widget-stat-2-label': 'متوسط زيادة العائد الإعلاني للعملاء',
+                'widget-stat-2-value': '+٣٤٪ زيادة على الأساس',
+                'widget-status': 'حالة النظام: مثالي',
+                'widget-active': 'التجارب النشطة: ١٨ تجربة',
+                'trust-label': 'موضع ثقة أقوى الماركات في الخليج العربي',
+                'bottlenecks-tag': 'تحليل معدل التحويل',
+                'bottlenecks-title': 'تخلص من الهدر الخفي',
+                'bottlenecks-desc': 'تتوسع ميزانيات العلامات التجارية عشوائياً على منصات تقدم تقارير ربط مالي غير دقيقة. تدقيقنا يحدد نقاط تسرب الميزانية فوراً.',
+                'waste-node1-title': 'تسريبات الربط المالي',
+                'waste-node1-desc': 'تتداخل بيانات القنوات التسويقية وتتضخم، مما يوحي بتحقيق هوامش أرباح أكبر من الحقيقة في بعض الحملات.',
+                'waste-node2-title': 'ركود واجهاد الإعلانات',
+                'waste-node2-desc': 'استخدام التصاميم الجمالية بدلاً من الخطافات التسويقية التي تخاطب عقل المستهلك يقلل من سرعة العائد على الاستثمار.',
+                'waste-node3-title': 'مسارات تحويل غير محسنة',
+                'waste-node3-desc': 'توجيه العملاء المهتمين إلى الصفحة الرئيسية بدلاً من صفحات الهبوط عالية الإقناع يتسبب في إهدار ميزانيات الاستحواذ.',
+                'blueprint-tag': 'المخطط التشغيلي',
+                'blueprint-title': 'حلقة البناء الإبداعي المتواصل',
+                'blueprint-desc': 'نهيكل حملاتك بديناميكية تضمن إعادة تغذية أصول المحتوى الإعلاني أسبوعياً ببيانات الاستجابة الشرائية الحقيقية.',
+                'chart-niche-head': 'مسارات تحويل القنوات الإعلانية',
+                'chart-niche-body': 'اختر المجال التجاري داخل لوحة المحاكاة التفاعلية لتستعرض أداء مسار البيع وتطوره مقارنة بمتوسط الخليج.',
+                'diagram-step1': 'تحليل معطيات المنتج وتحديد هوامش الأرباح والشرائح المستهدفة.',
+                'diagram-step2': 'صياغة ٥ خطافات ترويجية مبتكرة تحاكي اللهجة المحلية الخليجية.',
+                'diagram-step3': 'إطلاق حملات آلية المزايدة وتتبع ردود فعل واعتراضات العميل.',
+                'chart-baseline': 'معدل التحويل الأساسي الحالي',
+                'chart-mavo': 'معدل التحويل المحسن بعد دمج نظام مافو لابس',
+                'week-0': 'الأسبوع ٠',
+                'week-2': 'الأسبوع ٢',
+                'week-4': 'الأسبوع ٤',
+                'week-6': 'الأسبوع ٦ (جاهزية المحرك)',
+                'success-tag': 'الأرشيف المعتمد والنتائج',
+                'success-title': 'سجلات نجاح الخليج العربي',
+                'success-desc': 'عوائد حقيقية ملموسة ونتائج موثقة لحملات التجزئة الكبرى بالمنطقة. لا وجود للأرقام التجميلية — فقط ميزانيات مدارة ومبيعات صريحة.',
+                'case1-title': 'مستحضرات السلطان للتجميل',
+                'case1-desc': 'إعادة هيكلة الحملات الإعلانية الراكدة لاستهداف المستهلك الخليجي ذو القدرة الشرائية العالية باستخدام صيغ محتوى UGC دقيقة.',
+                'case2-title': 'مجموعة واحة الأزياء',
+                'case2-desc': 'حل مشكلات تتبع التحويل وتحسين صفحات الهبوط لاستقرار تكاليف الاستحواذ على العملاء عبر القنوات المختلفة.',
+                'case3-title': 'صيدليات صحاري الطبيعية',
+                'case3-desc': 'الاستفادة الكاملة من نظام Mavo Growth Lab لتحويل علامة تجارية محلية ناشئة إلى منصة تجارة رقمية إقليمية كبرى.',
+                'faq-tag': 'مؤشرات التوسع وعقبات النمو',
+                'faq-title': 'الرؤى والتحليلات الاستراتيجية',
+                'faq-desc': 'إجابات واضحة على الأسئلة الحيوية للمتاجر الإلكترونية والشركات الكبرى الساعية لتوسيع حجم عملياتها.',
+                'acc1-question': 'كيف تتعامل مافو لابس مع ضعف بيانات التتبع بعد تحديثات iOS 14.5؟',
+                'acc1-answer': 'نتجاوز تماماً ملفات تعريف الارتباط التقليدية للمتصفحات. نقوم ببناء أنظمة ربط خادم متطورة (Conversion API) تضمن مقارنة المبيعات الحقيقية من الخادم مباشرة مع الحملات الإعلانية النشطة.',
+                'acc2-question': 'ما هي المتغيرات البصرية والتسويقية التي يتم اختبارها دورياً؟',
+                'acc2-answer': 'ننتج ٥ متغيرات وافتتاحيات مختلفة لكل زاوية محتوى رئيسية أسبوعياً. نختبر التصاميم الثابتة، الكاروسيل الديناميكي، وفيديوهات صناع المحتوى (UGC) لضمان تحقيق كفاءة جذب قصوى.',
+                'acc3-question': 'هل تتطلب عقود مافو لابس التزامات تسويقية طويلة المدى؟',
+                'acc3-answer': 'لا. عملياتنا مبنية بالكامل على تحقيق نتائج واضحة ومعايير متفق عليها. في حال عدم إثبات تحسينات مباشرة في المبيعات، للمتاجر كامل المرونة في إنهاء التعاون.',
+                'blue-tag': 'مسار الأداء والتوسع',
+                'blue-title': 'مخطط التجارة الإلكترونية',
+                'blue-p1-title': 'تشخيص مسار البيع',
+                'blue-p1-desc': 'نقوم بتدقيق ومراقبة نقاط الاحتكاك البصري والتقني في صفحة المنتج لتحديد أسباب تسرب العملاء.',
+                'blue-p2-title': 'البناء الإبداعي المتطور',
+                'blue-p2-desc': 'نحن نبني خطافات تسويقية وزوايا إقناع بصرية مصممة خصيصاً للمستهلك ذو القدرة الشرائية العالية بالخليج العربي.',
+                'blue-p3-title': 'التوسع عبر المنصات',
+                'blue-p3-desc': 'توليد حملات تسويقية شاملة ومنسقة باستخدام خوارزميات الذكاء الاصطناعي لتقليل تكلفة الاستحواذ على العميل.',
+                'about-tagline': '// الأساس والمنطلق',
+                'about-title': 'حول مافو لابس',
+                'about-intro': 'تركز معظم الوكالات على التصاميم الجمالية المزخرفة التي تنفخ الأرقام الوهمية للوصول والمشاهدات فقط. نحن نبني أنظمة محتوى مترابطة مصممة خصيصاً لزيادة المبيعات الحقيقية وعائد الإعلانات.',
+                'about-meta': 'كل أصل بصري يجب أن يحمل قوة تحويلية حقيقية. إذا كان الأصل غير قادر على توليد بيانات وأرقام تحويل إيجابية، فلن يتم توزيعه.',
+                'about-v1-title': 'الرياضيات والبيانات الصريحة',
+                'about-v1-desc': 'نستبدل التخمينات العشوائية بالتقارير الرقمية وأوراق التحليلات المتكاملة والبيانات الإعلانية الشفافة تماماً.',
+                'about-v2-title': 'التخصيص التام للخليج العربي',
+                'about-v2-desc': 'دراسة متعمقة للمستهلك والجمهور المحلي بالمنطقة، مع مراعاة عادات الشراء بالمنطقة.',
+                'about-v3-title': 'سرعة وقوة التعديل والتنفيذ',
+                'about-v3-desc': 'تنفيذ واختبار سريع للزوايا التسويقية، وتعديل فوري لمسارات توجيه الميزانيات الإعلانية اليومية.',
+                'diff-traditional-badge': 'نموذج الوكالات التقليدي',
+                'diff-traditional-title-text': 'الوكالة التقليدية المعتادة',
+                'diff-t-1': '<strong>خدمات مشتتة:</strong> أقسام منفصلة ومنعزلة تنفذ خططاً عامة دون تكامل.',
+                'diff-t-2': '<strong>نشر اجتماعي عشوائي:</strong> إنشاء جداول نشر يومية دون أهداف مبيعات ملموسة.',
+                'diff-t-3': '<strong>تصاميم تجميلية فقط:</strong> تزيين شكل العلامة التجارية بدون قياس التأثير التحليلي.',
+                'diff-t-4': '<strong>تقارير غامضة ومبهمة:</strong> التستر خلف أرقام المشاهدات والوصول الزائف لإخفاء تراجع المبيعات.',
+                'diff-mavo-badge': 'منهجية مافو لابس',
+                'diff-mavo-title': 'مافو لابس',
+                'diff-m-1': '<strong>نظام نمو موحد ومترابط:</strong> دمج الإبداع، شراء الوسائط الإعلانية، والتحليلات تحت سقف واحد.',
+                'diff-m-2': '<strong>إبداع مخصص للتحويل:</strong> تطوير وإنتاج محتوى ومواد إعلانية مصممة ومبنية للبيع المباشر.',
+                'diff-m-3': '<strong>زوايا محتوى مُختبرة:</strong> تجارب مكثفة ومستمرة على الافتتاحيات، صياغة النصوص، وعروض المنتجات.',
+                'diff-m-4': '<strong>تقارير شفافة وحتمية:</strong> مشاركة الأرقام الحقيقية ومخرجات التعلم بدقة صريحة من كل تجربة.',
+                'values-sub': '// مبادئ وثقافة المختبر',
+                'values-title': 'ست قواعد أساسية للعمل',
+                'val-1-title': 'الإثبات قبل الضجيج',
+                'val-1-desc': 'نحن نثبت التأثير التجاري الحقيقي والمبيعات، ولا نحتفل أبداً بالوصول الوهمي أو الانطباعات الخالية من النية الشرائية.',
+                'val-2-title': 'إبداع مخترق وقوي',
+                'val-2-desc': 'الإبداع بالنسبة لنا ليس تزييناً، بل هو زاوية حادة ورسالة مدروسة مصممة للاستحواذ والبيع مباشرة.',
+                'val-3-title': 'الأنظمة تهزم النشر العشوائي',
+                'val-3-desc': 'نبني نظاماً تسويقياً شاملاً يغطي رحلة الشراء الكاملة لعميلك، بدلاً من جداول النشر اليومية غير المنتجة.',
+                'val-4-title': 'الصراحة الحادة',
+                'val-4-desc': 'نواجه عملاءنا بالحقيقة المطلقة دائماً، حتى عندما تكمن المشكلة الأساسية في عرض المنتج، أو صفحة الدفع، أو تسعير الخدمات.',
+                'val-5-title': 'اختبر، تعلّم، تحرّك',
+                'val-5-desc': 'كل حملة إعلانية نطلقها هي فرصة تحليلية وتجريبية. نختبر الخطافات والعروض والصفحات دون توقف.',
+                'val-6-title': 'الانضباط الفاخر',
+                'val-6-desc': 'المنتج الفاخر لا يعني الذهب والألوان البراقة. بل يعني معرفة متى تحذف العناصر لتجعل الرسالة أقصر، أوضح، وأشد تأثيراً.',
+                'service-tag': 'عروض المختبر',
+                'service-title': 'مصممة خصيصاً للتوسع',
+                'service-desc': 'أطر عمل واضحة تتناسب مع مرحلة نمو متجرك الحالية، بعيداً عن العقود المعقدة والالتزامات الطويلة والمبهمة.',
+                'serv-s1-title': 'الانطلاقة السريعة',
+                'serv-s1-desc': 'تشخيص كامل للمتجر والfunnel وتحديد دقيق لمكامن الخلل لبدء إطلاق إمكاناتك الخفية.',
+                'serv-s1-f1': 'تدقيق متكامل لخطوات التحويل ومسارات البيع',
+                'serv-s1-f2': 'تحليل وتقييم زوايا المحتوى الإعلاني',
+                'serv-s1-f3': 'مقارنات تنافسية مع قادة المجال بالخليج',
+                'serv-s1-f4': 'خطة عمل سريعة ومكتوبة جاهزة للتنفيذ',
+                'serv-s2-title': 'محرك المحتوى الإبداعي',
+                'serv-s2-desc': 'توليد مستمر للإعلانات وزوايا الإقناع المصممة والمختبرة للمستهلك الخليجي.',
+                'serv-s2-f1': 'تطوير خطط ونصوص محتوى صناع المحتوى (UGC)',
+                'serv-s2-f2': 'تصميم وإعداد إعلانات ثابتة وعالية الأداء',
+                'serv-s2-f3': 'كتابة نصوص ترويجية مباشرة ومركزة للتأثير',
+                'serv-s2-f4': 'مراجعة وتعديل الخطافات أسبوعياً بناءً على البيانات',
+                'serv-s3-title': 'مختبر النمو المتكامل',
+                'serv-s3-desc': 'تكامل شامل يجمع بين صناعة الإبداع الإعلاني، شراء الميديا الإعلانية الاحترافية، وتتبع العوائد.',
+                'serv-s3-f1': 'شراء وسائط عبر المنصات الرئيسية (ميتا، تيك توك)',
+                'serv-s3-f2': 'حملات إعلانية مبنية على الفرضيات والاختبار المستمر',
+                'serv-s3-f3': 'إدارة الميزانيات وتطوير مستمر للأصول المربحة',
+                'serv-s3-f4': 'لوحة تحكم شفافة تظهر العوائد الصافية والتعلم',
+                'serv-s4-title': 'نظام التوسع الشامل',
+                'serv-s4-desc': 'محرك توسع وتطوير شامل لعلامتك التجارية. استراتيجية واسعة، وبناء أنظمة محتوى متكاملة وصيانة الfunnel.',
+                'serv-s4-f1': 'إعادة هندسة وتصميم مسار البيع للمتجر بالكامل',
+                'serv-s4-f2': 'إدارة مستمرة وديناميكية لعمليات إنتاج المحتوى لمتجرك',
+                'serv-s4-f3': 'مستشار نمو مخصص لتحليل وتعديل مؤشرات الأداء الأساسية',
+                'serv-s4-f4': 'حملات تحسين معدل التحويل المباشر (CRO)',
+                'serv-popular': 'الأكثر طلباً',
+                'serv-cta': 'اختر البرنامج',
+                'serv-details-btn': 'صفحة البرنامج التفصيلية',
+                'excl-title': 'الفئات التي لا نخدمها:',
+                'excl-desc': 'نحافظ على معايير تشغيلية وانضباطية صارمة. لا نتعاون مع العلامات التجارية التي تتصف بالتالي:',
+                'excl-p1': 'عدم توفر ميزانية مخصصة لاختبار الإعلانات وتطوير المحتوى',
+                'excl-p2': 'البحث عن خدمات نشر اجتماعي عشوائية خالية من الأهداف والبيع',
+                'excl-p3': 'عدم الرغبة في تحسين وتعديل عروض المنتجات والصفحات التسويقية',
+                'calc-tag': '// مختبر المحاكاة والتحليل',
+                'calc-title': 'محاكي النمو التفاعلي للخليج العربي',
+                'calc-desc': 'أدخل بيانات حملاتك الحالية لتحديد مقدار الزيادة والعائد المالي الممكن تحقيقه بدمج أنظمة الإبداع مع وسائط الشراء.',
+                'calc-input-head': 'المعطيات الحالية للمتجر',
+                'calc-label-spend': 'الإنفاق الإعلاني الشهري',
+                'calc-label-roas': 'العائد الحالي على الإعلان (ROAS)',
+                'calc-label-tier': 'مستوى استراتيجية التوسع',
+                'calc-opt-1': 'نمو متحفظ ومدروس لمسارات التحويل (+٢٠٪)',
+                'calc-opt-2': 'استراتيجية التوسع المثلى للمحرك (+٣٥٪)',
+                'calc-opt-3': 'نظام نمو وهجوم توسعي قوي (+٥٠٪)',
+                'calc-out-sub': 'العائد والنتائج المتوقعة',
+                'calc-out-title': 'التوقعات والنتائج الرقمية',
+                'calc-out-desc': 'محسوبة بناءً على عوائد ومعطيات حقيقية من حملات سابقة في مجالات الأزياء والعناية بالخليج العربي.',
+                'calc-out-new-roas': 'العائد المستهدف الجديد',
+                'calc-out-revenue': 'إجمالي الإيرادات الإضافية',
+                'calc-out-rec': 'المسار الموصى به لمتجرك',
+                'calc-cta-btn': 'احجز جلسة استراتيجية النمو',
+                'cta-tag': 'مصفوفة القرار الحاسم',
+                'cta-title': 'توقف عن حرق ميزانيتك الإعلانية على مجرد منشورات جميلة.',
+                'cta-desc': 'احصل على تحليل موضوعي قائم على لغة الأرقام لعروض متجرك، والخطافات الإعلانية، وكفاءة صفحة الدفع. تدقيق شفاف ١٠٠٪ وبدون أي شروط.',
+                'cta-check-1': 'تسليم مخرجات التحليل عبر واتساب مباشرة',
+                'cta-check-2': 'تدقيق ومراجعة عملية لخطافات إعلاناتك الحالية',
+                'cta-check-3': 'خدمة مجانية بالكامل للمتاجر المؤهلة',
+                'cta-primary-btn': 'اطلب تدقيق النمو المجاني لمتجرك الآن',
+                'footer-desc': 'مافو لابس هو مختبر أداء إبداعي متكامل لتحويل انتباه المستهلكين بالخليج العربي إلى مبيعات وعوائد استثنائية ملموسة وواضحة.',
+                'footer-reach': 'هندسة تحويل وتوسع ممتازة.<br>الرياض، المملكة العربية السعودية.<br><span class="block mt-2">📧 systems@mavolabs.com</span>',
+                'footer-copyright': '© ٢٠٢٦ مافو لابس. جميع الحقوق محفوظة. مختبر الأداء الإبداعي للنمو.',
+                'footer-validation': 'صحة ودقة البيانات مفحوصة إصدار ٢.٢٦',
+                // New Contact Page & Dedicated Service translation tags (Arabic)
+                'contact-tag': '// قنوات تواصل مباشرة وآمنة',
+                'contact-title': 'تواصل معنا مباشرة',
+                'contact-desc': 'قنوات اتصال سريعة ومحمية مع مهندسي وخبراء النمو لدينا. نتجاوز تماماً النماذج الطويلة لنسهل تواصلك معنا.',
+                'contact-wa-title': 'خط واتساب المباشر',
+                'contact-wa-desc': 'تواصل فوري للطلبات العامة وتدقيق الإعلانات المباشر واستفسارات الأنظمة.',
+                'contact-wa-action': 'افتح المحادثة الآن',
+                'contact-email-title': 'البريد الإلكتروني الآمن',
+                'contact-email-desc': 'لمشاركة بيانات الربط البرمجي، وإعدادات الأنظمة، والاتفاقيات والمشاريع الكبرى.',
+                'contact-email-action': 'إرسال بريد إلكتروني',
+                'contact-hq-title': 'المقر الرئيسي',
+                'contact-hq-desc': 'الرياض، المملكة العربية السعودية. حي المرسلات، مجمعات المكاتب التنفيذية.',
+                'contact-hq-action': 'المواعيد المسبقة فقط',
+                'contact-hours-title': 'ساعات العمل الرسمية',
+                'contact-hours-desc': 'من الأحد إلى الخميس // من ٠٩:٠٠ صباحاً إلى ٠٦:٠٠ مساءً (بتوقيت الرياض)',
+                'contact-map-title': 'تكامل كامل وتغطية شاملة للخليج العربي',
+                'contact-map-desc': 'نحن نطلق حملات إعلانية متكاملة، ومسارات هبوط عالية التحويل مخصصة وموجهة بدقة لأسواق السعودية، الإمارات، قطر، الكويت، البحرين، وعمان.',
+                'contact-map-status': 'محرك الرياض يعمل بكفاءة',
+                'service-back-btn': 'العودة لكافة الخدمات',
+                'service-includes-title': 'مخرجات ومشمولات البرنامج الأساسية:',
+                'service-card-meta-title': 'محددات وعوامل البرنامج',
+                'service-param-duration': 'فترة البرنامج',
+                'service-param-involvement': 'جلسة الانطلاق',
+                'service-param-scope': 'مخرجات البرنامج',
+                'sprint-page-title': 'برنامج الانطلاقة السريعة',
+                'sprint-page-desc': 'خطوتنا التشخيصية الأولى لتقييم كفاءة ومعدل تحويل متجرك. قبل تخصيص الميزانيات، نفحص بدقة نقاط الاحتكاك، ومكامن تسرب المشترين، ومنافسيك في الخليج العربي.',
+                'sprint-del1-t': 'تدقيق تقني لمسار التحويل',
+                'sprint-del1-d': 'تحديد سرعات التحميل والمشاكل البرمجية التي تمنع إتمام عمليات الشراء.',
+                'sprint-del2-t': 'تقييم الأصول والخطافات الإعلانية',
+                'sprint-del2-d': 'تحليل محتوى حملاتك الإعلانية وجودة الخطافات والرسائل التسويقية.',
+                'sprint-del3-t': 'تحليل منافسي الخليج',
+                'sprint-del3-d': 'تتبع استراتيجيات الإعلانات النشطة وعروض منافسيك المباشرين في السوق.',
+                'sprint-del4-t': 'سجل العمل الفوري والحلول',
+                'sprint-del4-d': 'تقرير فوري ومكتوب بأدق التغييرات الواجب تنفيذها لاستعادة هوامش الربح.',
+                'engine-page-title': 'برنامج محرك المحتوى الإبداعي',
+                'engine-page-desc': 'توليد مستمر للأصول البصرية الجاذبة وعالية الأداء. نصنع نصوصاً إعلانية، وسيناريوهات محتوى صناع المحتوى (UGC)، وقوالب بصرية متكاملة تحاكي احتياج المتسوق الخليجي.',
+                'engine-del1-t': 'سيناريوهات UGC مع صناع محتوى محليين',
+                'engine-del1-d': 'تطوير نصوص وتنسيق محتوى مرئي مع صناع محتوى يتحدثون بلهجة بلدك المستهدف بالخليج.',
+                'engine-del2-t': 'تصاميم ثابتة عالية التحويل',
+                'engine-del2-d': 'أصول صور وكاروسيل معدة لتقليل تكلفة الاستحواذ على العميل (CAC).',
+                'engine-del3-t': 'نصوص تسويقية للاستجابة المباشرة',
+                'engine-del3-d': 'صياغة عناوين إقناعية قوية تتصدى لاعتراضات المتسوق الخليجي فوراً.',
+                'engine-del4-t': 'سلسلة خطافات إعلانية متجددة أسبوعياً',
+                'engine-del4-d': 'نغير افتتاحيات إعلاناتك دورياً لنضمن ألا تفقد حملاتك فعاليتها وزخمها.',
+                'service-param-velocity': 'معدل الإنتاج الشهري',
+                'service-param-testing': 'سبرينتات الاختبار الإعلاني',
+                'service-param-scope': 'الهدف التشغيلي',
+                'lab-page-title': 'برنامج مختبر النمو المتكامل',
+                'lab-page-desc': 'نظام النمو والاستحواذ الشامل. نربط صناعة المحتوى مباشرة بشراء الوسائط الإعلانية وإدارة الميزانيات على منصات ميتا، تيك توك، وسناب شات مع تتبع وحساب دقيق للعوائد.',
+                'lab-del1-t': 'شراء وإدارة وسائط إعلانية احترافية',
+                'lab-del1-d': 'إعداد الحملات، وإدارة الميزانيات التسويقية اليومية، وتحسين عوائد الإنفاق (ROAS).',
+                'lab-del2-t': 'اختبار منهجي مبني على الفرضيات',
+                'lab-del2-d': 'تقييم زوايا الإعلانات بميزانيات منخفضة وتصعيد الأصول الرابحة فقط لتوفير رأس المال.',
+                'lab-del3-t': 'ربط واجهة الخادم الفنية (Conversion API)',
+                'lab-del3-d': 'دمج تتبع خادم آمن وموثوق ليتخطى تراجع بيانات متصفحات المستهلكين.',
+                'lab-del4-t': 'تعديل وتطوير فوري للمحتوى الإعلاني',
+                'lab-del4-d': 'دورة تسريع الأصول البصرية الرابحة لتعويض أي تراجع أو تكرار بالمنصات.',
+                'lab-popular-badge': 'الأكثر طلباً وتأثيراً',
+                'service-param-channels': 'المنصات الإعلانية النشطة',
+                'service-param-loop': 'التكامل الإبداعي والتقني',
+                'service-param-scale': 'معيار نجاح الحملات',
+                'scale-page-title': 'برنامج نظام التوسع الشامل',
+                'scale-page-desc': 'منظومة الشراكة المتكاملة والذكية للعلامات التجارية الكبرى بالخليج. نهندس صفحات هبوط فائقة السرعة، ونقود إنتاج المحتوى، ونبني الحملات الإعلانية الشاملة.',
+                'scale-del1-t': 'تصميم صفحات هبوط مخصصة ومكودة للبيع',
+                'scale-del1-d': 'تطوير صفحات برمجية سريعة ومثبتة ترفع من رغبة وإقبال المتسوق على الشراء.',
+                'scale-del2-t': 'استوديو بصري وإعلاني دائم',
+                'scale-del2-d': 'تزويد متجرك بمتغيرات محتوى مرئي وصور UGC لا ينتهي لدعم حملات التوسع.',
+                'scale-del3-t': 'مستشار نمو وشريك استراتيجي مخصص',
+                'scale-del3-d': 'اجتماعات دورية أسبوعية لتقييم عروض منتجاتك وتسعيرها وتعديل مسارات التوسع.',
+                'scale-del4-t': 'إدارة وتحسين متواصل لمعدلات التحويل',
+                'scale-del4-d': 'مراقبة وتعديل تجربة العميل وعمليات الدفع لتأمين أفضل تكاليف مبيعات ممكنة.',
+                'service-param-infrastructure': 'الهيكل البرمجي للصفحات',
+                'service-param-meetings': 'الاجتماعات الاستراتيجية',
+                'service-param-capacity': 'الشركاء المؤهلين بالبرنامج',
+                'float-wa-text': 'تحدث مع مستشار النمو لدينا'
+            }
+        };
+
+        let currentLang = 'en';
+
+        // Dynamic multi-view page routing router
+        function switchPage(pageId) {
+            document.querySelectorAll('nav a').forEach(el => {
+                el.classList.remove('text-white', 'border-mavoPowderBlue');
+                el.classList.add('text-mavoBlack', 'border-transparent');
+            });
+
+            const activeNavLink = document.getElementById('nav-' + pageId);
+            if (activeNavLink) {
+                activeNavLink.classList.remove('text-mavoBlack', 'border-transparent');
+                activeNavLink.classList.add('text-white', 'border-mavoPowderBlue');
+            }
+
+            const views = document.querySelectorAll('.page-view');
+            views.forEach(view => {
+                view.classList.remove('active');
+            });
+
+            const targetView = document.getElementById('view-' + pageId);
+            if (targetView) {
+                targetView.classList.add('active');
+
+                // Re-trigger visual element animations inside the loaded view
+                const dynamicRevealItems = targetView.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right');
+                dynamicRevealItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('active');
+                    }, index * 100);
+                });
+
+                if (pageId === 'calculator') {
+                    calculateUplift();
+                }
+                if (pageId === 'home') {
+                    updateHomeChart('fashion');
+                }
+            }
+
+            // Scroll cleanly to top of view
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Language toggle controller
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+
+            const htmlEl = document.documentElement;
+            htmlEl.setAttribute('lang', currentLang);
+            htmlEl.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+
+            document.getElementById('langBtnText').innerText = currentLang === 'en' ? 'العربية' : 'English';
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+
+            calculateUplift();
+
+            // Refresh current active chart metrics
+            const activeHomeNicheBtn = document.querySelector('[id^="btn-home-"].bg-mavoPowderBlue');
+            if (activeHomeNicheBtn) {
+                const niche = activeHomeNicheBtn.id.split('-').pop();
+                updateHomeChart(niche);
+            }
+        }
+
+        // Toggle mobile nav panel
+        function toggleMobileNav() {
+            const panel = document.getElementById('mobMenuPanel');
+            const icon = document.getElementById('mobMenuIcon');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                icon.className = "fa-solid fa-xmark text-xl";
+            } else {
+                panel.classList.add('hidden');
+                icon.className = "fa-solid fa-bars text-xl";
+            }
+        }
+
+        // Strategic ROI Calculator algorithm
+        function calculateUplift() {
+            const spend = parseInt(document.getElementById('spendSlider').value);
+            const roas = parseFloat(document.getElementById('roasSlider').value);
+            const tier = document.getElementById('tierSelector').value;
+
+            const currencyText = currentLang === 'ar' ? ' ر.س' : ' SAR';
+
+            document.getElementById('spendVal').innerText = spend.toLocaleString(currentLang === 'ar' ? 'ar-SA' : 'en-US') + currencyText;
+            document.getElementById('roasVal').innerText = roas.toFixed(1) + "x";
+
+            let strategyMultiplier = 1.35;
+            let recPackage = "Growth Lab";
+            let recPackageAr = "مختبر النمو";
+
+            if (tier === 'conservative') {
+                strategyMultiplier = 1.20;
+                recPackage = "Creative Engine";
+                recPackageAr = "محرك المحتوى";
+            } else if (tier === 'optimal') {
+                strategyMultiplier = 1.35;
+                recPackage = "Growth Lab";
+                recPackageAr = "مختبر النمو";
+            } else if (tier === 'aggressive') {
+                strategyMultiplier = 1.50;
+                recPackage = "Scale System";
+                recPackageAr = "نظام التوسع";
+            }
+
+            const targetRoas = roas * strategyMultiplier;
+            const currentRevenue = spend * roas;
+            const targetRevenue = spend * targetRoas;
+            const netGain = targetRevenue - currentRevenue;
+
+            document.getElementById('targetRoas').innerText = targetRoas.toFixed(2) + "x";
+            document.getElementById('revGain').innerText = "+" + Math.round(netGain).toLocaleString(currentLang === 'ar' ? 'ar-SA' : 'en-US') + currencyText;
+            document.getElementById('recPackage').innerText = currentLang === 'ar' ? recPackageAr : recPackage;
+        }
+
+        // Interactive GCC Conversion Chart database configurations
+        const homeNicheChartData = {
+            'fashion': {
+                baselinePath: "M0,150 L200,140 L400,145 L600,135 L800,140 L1000,130",
+                mavoPath: "M0,150 L200,120 L400,90 L600,65 L800,45 L1000,20",
+                baselineVal: "1.80%",
+                mavoVal: "4.20%",
+                liftEn: "+133% Uplift",
+                liftAr: "+١٣٣٪ كفاءة إضافية"
+            },
+            'beauty': {
+                baselinePath: "M0,165 L200,160 L400,165 L600,150 L800,155 L1000,145",
+                mavoPath: "M0,165 L200,115 L400,80 L600,50 L800,35 L1000,10",
+                baselineVal: "1.10%",
+                mavoVal: "4.80%",
+                liftEn: "+336% Uplift",
+                liftAr: "+٣٣٦٪ كفاءة إضافية"
+            },
+            'electronics': {
+                baselinePath: "M0,180 L200,175 L400,180 L600,175 L800,180 L1000,170",
+                mavoPath: "M0,180 L200,140 L400,115 L600,90 L800,75 L1000,45",
+                baselineVal: "0.80%",
+                mavoVal: "2.90%",
+                liftEn: "+262% Uplift",
+                liftAr: "+٢٦٢٪ كفاءة إضافية"
+            }
+        };
+
+        function updateHomeChart(niche) {
+            const buttons = ['fashion', 'beauty', 'electronics'];
+            buttons.forEach(btnKey => {
+                const btn = document.getElementById('btn-home-' + btnKey);
+                if (btnKey === niche) {
+                    btn.className = "bg-mavoPowderBlue text-mavoMidnight px-3 py-1.5 rounded text-xs font-bold transition-all";
+                } else {
+                    btn.className = "text-white hover:bg-white/5 px-3 py-1.5 rounded text-xs font-bold transition-all";
+                }
+            });
+
+            const data = homeNicheChartData[niche];
+            document.getElementById('homeChartBaseline').setAttribute('d', data.baselinePath);
+            document.getElementById('homeChartMavo').setAttribute('d', data.mavoPath);
+
+            document.getElementById('chartReadoutBaseline').innerText = data.baselineVal;
+            document.getElementById('chartReadoutMavo').innerText = data.mavoVal;
+            document.getElementById('chartReadoutLift').innerText = currentLang === 'ar' ? data.liftAr : data.liftEn;
+        }
+
+        // Interactive Accordion Strategy FAQs
+        function toggleAccordion(id) {
+            const content = document.getElementById('content-' + id);
+            const icon = document.getElementById('icon-' + id);
+            const title = document.getElementById('title-' + id);
+
+            const isOpen = content.classList.contains('active');
+
+            // Close all items
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                el.style.maxHeight = null;
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('[id^="icon-acc"]').forEach(el => {
+                el.className = "fa-solid fa-chevron-down text-mavoTeal transition-transform duration-300";
+            });
+            document.querySelectorAll('[id^="title-acc"]').forEach(el => {
+                el.classList.remove('text-mavoTeal');
+            });
+
+            // Toggle selected item
+            if (!isOpen) {
+                content.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.className = "fa-solid fa-chevron-up text-mavoTeal transition-transform duration-300";
+                title.classList.add('text-mavoTeal');
+            }
+        }
+
+        // Connected Neural Particle Physics Backdrop Canvas
+        const canvas = document.getElementById('ambientParticles');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        let mouseX = null;
+        let mouseY = null;
+
+        function setCanvasDimensions() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', setCanvasDimensions);
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1.2;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.alpha = Math.random() * 0.4 + 0.15;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Loop bounds
+                if (this.x > canvas.width) this.x = 0;
+                else if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                else if (this.y < 0) this.y = canvas.height;
+
+                // Mouse gravity logic
+                if (mouseX && mouseY) {
+                    const dx = mouseX - this.x;
+                    const dy = mouseY - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 140) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (140 - distance) / 140;
+                        this.x += forceDirectionX * force * 1.5;
+                        this.y += forceDirectionY * force * 1.5;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = '#00F2FE'; // Theme accent
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            const particleCount = Math.min(65, Math.floor((canvas.width * canvas.height) / 18000));
+            for (let i = 0; i < particleCount; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Connected nodes mechanism
+            for (let i = 0; i < particlesArray.length; i++) {
+                for (let j = i + 1; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(169, 200, 240, ${0.1 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        // On-scroll creative viewport reveal transitions
+        function handleScrollReveal() {
+            const revealElements = document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right');
+            const triggerBottom = window.innerHeight * 0.85;
+
+            revealElements.forEach(el => {
+                const elTop = el.getBoundingClientRect().top;
+                if (elTop < triggerBottom) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScrollReveal);
+
+        // Application boot triggers
+        window.onload = function () {
+            setCanvasDimensions();
+            initParticles();
+            animateParticles();
+
+            // Set first tab selection
+            switchPage('home');
+
+            // Set up scroll hooks
+            handleScrollReveal();
+        };
+    </script>
+</body>
+
+</html>
